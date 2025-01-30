@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default async function Intro() {
+export default function Intro() {
     return (
     <div id="intro-box" className="instructions-stim-container">
       <div className="row">
