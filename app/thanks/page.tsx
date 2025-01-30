@@ -1,0 +1,32 @@
+import Link from 'next/link'
+import Header from '@/components/header'
+import { Suspense } from 'react'
+import ExpandingArrow from '@/components/expanding-arrow'
+import { auth } from "@/auth"
+
+export const dynamic = 'force-dynamic'
+
+export default async function Home() {
+  const session = await auth()
+  return (
+    <main>
+    <div id="content">
+    <Header/>
+    <div id="thanks-box" className="instructions-stim-container">
+    <div className="row">
+      <div className="col d-flex justify-content-center">
+        <h2>Thank you for taking part in this study!</h2>
+      </div>
+    <div className="row">
+      <div className="col d-flex justify-content-center">
+          <Link href="/api/auth/signout">
+            <button type="button" className="btn btn-outline-primary mt-8 btn-lg">Sign out</button>
+          </Link>
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </main>
+    )
+}

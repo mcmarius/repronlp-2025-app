@@ -76,9 +76,9 @@ const TaskForm = (props: TaskFormProps) => {
     });
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
-    if(currentId == 11)
-        // TODO: replace with final page, set cookie to mark as to not complete again
-        router.push('/')
+    if(currentId == 300)
+        // TODO: replace with final page, set cookie to mark as to not complete again; no need to??
+        router.push('/thanks')
     else
         router.push(`/tasks/${currentId + 1}`);
   };
