@@ -1,25 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { FormEvent } from 'react'
 
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+//import { useForm } from 'react-hook-form';
+//import { yupResolver } from '@hookform/resolvers/yup';
+//import * as Yup from 'yup';
 
 export default function InformedConsent() {
     const router = useRouter()
     // form validation rules 
-    const validationSchema = Yup.object().shape({
-        acceptTerms: Yup.bool()
-            .oneOf([true], 'You must give your consent to take part in this ReproNLP experiment')
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+    //const validationSchema = Yup.object().shape({
+    //    acceptTerms: Yup.bool()
+    //        .oneOf([true], 'You must give your consent to take part in this ReproNLP experiment')
+    //});
+    //const formOptions = { resolver: yupResolver(validationSchema) };
     // get functions to build form with useForm() hook
-    const { register, handleSubmit, reset, formState } = useForm(formOptions);
-    const { errors } = formState;
+    //const { register, handleSubmit, reset, formState } = useForm(formOptions);
+    //const { errors } = formState;
 
-    const onSubmitFunc = (data: { acceptTerms?: boolean | undefined; }) => {
+    const onSubmitFunc = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
       console.log('accepted terms')
       
       router.push("/instructions")
@@ -44,14 +46,13 @@ export default function InformedConsent() {
       </div>
       <div className="row">
         <div className="col d-flex justify-content-center align-self-center">
-                <form onSubmit={handleSubmit(onSubmitFunc)}>
+                <form onSubmit={onSubmitFunc}>
                     <div className="form-group form-check">
-                        <input type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} onChange={toggleButton} />
+                        <input type="checkbox" className="form-check-input" name="acceptTerms" id="acceptTerms" onChange={toggleButton} />
                         <label htmlFor="acceptTerms" className="form-check-label">
                         I have received and signed a consent form for this study and
                         I agree to take part in the project<br/>
                         &quot;ReproHum – Evaluation of computer-generated scientific definitions&quot;</label>
-                        <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
                     </div>
                     <div className="form-group">
 			<div className="col d-flex justify-content-center">
