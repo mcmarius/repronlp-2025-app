@@ -1,12 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { FormEvent, MouseEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface TaskFormProps {
+  id: string;
+  term: string;
+  definition: string;
+}
 
-const TaskForm = (props) => {
+const TaskForm = (props: TaskFormProps) => {
   const router = useRouter();
-  const { id } = props.id;
   const [currentId, setCurrentId] = useState(parseInt(props.id));
   const [answers, setAnswers] = useState({});
 
@@ -55,15 +59,19 @@ const TaskForm = (props) => {
     likertDisable: false
   }); // questions.find((q) => q.id === currentId);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const answer = event.target.answer.value;
-    const answer2 = event.target.answer2.value;
+    //const target = event.target as AnswerForm;
+    //const answer = target.answer.value;
+    //const answer2 = target.answer2.value;
+    const form = event.target as HTMLFormElement;
+    const answer = form.querySelector('input[name="answer"]') as HTMLInputElement;
+    const answer2 = form.querySelector('input[name="answer2"]') as HTMLInputElement;
     // console.log(`have ${answer2}`)
     fetch('/api/task', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({uid: 'USER_ID', qid: currentId, data: {q1: answer, q2: answer2 }}),
+      body: JSON.stringify({uid: 'USER_ID', qid: currentId, data: {q1: answer.value, q2: answer2.value }}),
     });
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
@@ -73,9 +81,10 @@ const TaskForm = (props) => {
     else
         router.push(`/tasks/${currentId + 1}`);
   };
-  const handleQ1Click = (event) => {
+  const handleQ1Click = (event: MouseEvent) => {
     // event.preventDefault();
-    if(event.target.id == 'no-opt')
+    const target = event.target as HTMLElement;
+    if(target.id == 'no-opt')
       setCurrentQuestion({ ...currentQuestion, likertDisable: true });
     else
       setCurrentQuestion({ ...currentQuestion, likertDisable: false });
@@ -113,7 +122,6 @@ const TaskForm = (props) => {
     <form onSubmit={handleSubmit}>
       {currentQuestion && (
         <div>
-          {currentQuestion.heading && <h2>{currentQuestion.heading}</h2>}
           <div className="col-9 mb-8" style={styles.text}>
 	          <h5>Instructions</h5>
 	          <div style={styles.horizontalLine} />

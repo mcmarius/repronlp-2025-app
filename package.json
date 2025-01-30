@@ -26,7 +26,7 @@
     "html-loader": "^5.1.0",
     "jquery-ui-bundle": "1.12.1-migrate",
     "lodash": "^4.17.21",
-    "next": "13.4.13",
+    "next": "14.2.23",
     "postcss": "8.4.22",
     "react": "18.2.0",
     "react-dom": "18.2.0",

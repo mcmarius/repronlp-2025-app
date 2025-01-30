@@ -19,18 +19,20 @@ export default function InformedConsent() {
     const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
 
-    function onSubmitFunc(e) {
+    const onSubmitFunc = (data: { acceptTerms?: boolean | undefined; }) => {
       console.log('accepted terms')
       
       router.push("/instructions")
     }
     function toggleButton() {
-        let btn = document.getElementById('consent-button').disabled;
+        let btn = document.getElementById('consent-button') as HTMLInputElement;
+        //let input = btn?.disabled;
+        btn.disabled = !btn.disabled;
         // console.log(btn)
-        if (btn)
-          document.getElementById('consent-button').disabled = "";
-        else
-          document.getElementById('consent-button').disabled = "disabled";
+        //if (input)
+        //  document.getElementById('consent-button').disabled = "";
+        //else
+        //  document.getElementById('consent-button').disabled = "disabled";
     }
 
     return (
@@ -44,7 +46,7 @@ export default function InformedConsent() {
         <div className="col d-flex justify-content-center align-self-center">
                 <form onSubmit={handleSubmit(onSubmitFunc)}>
                     <div className="form-group form-check">
-                        <input name="acceptTerms" type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} onChange={toggleButton} />
+                        <input type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} onChange={toggleButton} />
                         <label htmlFor="acceptTerms" className="form-check-label">
                         I have received and signed a consent form for this study and
                         I agree to take part in the project<br/>
@@ -53,7 +55,7 @@ export default function InformedConsent() {
                     </div>
                     <div className="form-group">
 			<div className="col d-flex justify-content-center">
-			    <button type="submit" disabled="disabled" id="consent-button" className="btn btn-outline-primary btn-lg">Continue to instructions</button>
+			    <button type="submit" disabled={true} id="consent-button" className="btn btn-outline-primary btn-lg">Continue to instructions</button>
 			</div>
 		    </div>
 	        </form>

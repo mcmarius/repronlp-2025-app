@@ -11,6 +11,11 @@ import ExpandingArrow from '@/components/expanding-arrow'
 
 export const dynamic = 'force-dynamic'
 
+interface Query {
+  id: number;
+  // Add other properties as needed
+}
+
 export default async function Page({params,}: {params: Promise<{ id: string }>}) {
   const id = (await params).id
   const termsFile = await fs.readFile(process.cwd() + '/utils/terms.json', 'utf8');
@@ -19,7 +24,7 @@ export default async function Page({params,}: {params: Promise<{ id: string }>})
   const definitions = JSON.parse(definitionsFile);
   // console.log(terms)
   //console.log(definitions[0])
-  const term = terms.find((q) => q.id == definitions[id]['term_id'])
+  const term = terms.find((q: Query) => q.id == definitions[id]['term_id'])
   //console.log(term)
   return (
     <main>

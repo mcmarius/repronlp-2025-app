@@ -16,7 +16,7 @@ const nextConfig = {
     }
     return config
   },*/
-  logging: true
+  logging: {}
 }
 
 module.exports = nextConfig

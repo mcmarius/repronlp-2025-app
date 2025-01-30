@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 export default function Instructions() {
 
-    function onSubmitFunc(data) {
+    function onSubmitFunc() {
       console.log('accepted terms')
     }
 
