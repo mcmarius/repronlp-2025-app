@@ -1,9 +1,14 @@
 import './globals.css'
+import './css/bootstrap.min-5_3_0.css'
+import './css/bootstrap-icons-1.11.3.css'
+import './css/alpaca.min-1.5.23.css'
+// import './css/shareon.min-2.5.0.css'
+import './css/litw-styles-2.0.0.css'
 import { Inter } from 'next/font/google'
 
 export const metadata = {
-  title: 'Vercel KV for Redis Next.js Starter',
-  description: 'A simple Next.js app with Vercel KV for Redis as the database',
+  title: 'ReproNLP – Evaluation of computer-generated scientific definitions',
+  description: 'LabInTheWild clone to mimic the original experiment. Backend built using Next.js with Vercel KV for Redis',
 }
 
 const inter = Inter({

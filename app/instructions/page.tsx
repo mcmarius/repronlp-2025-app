@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import Header from '@/components/header'
-import Intro from '@/components/intro'
+import Instructions from '@/components/instructions'
 import { Suspense } from 'react'
 import ExpandingArrow from '@/components/expanding-arrow'
 
@@ -13,7 +13,7 @@ export default function Home() {
     <main>
     <div id="content">
     <Header/>
-    <Intro/>
+    <Instructions/>
     </div>
     </main>
     )
