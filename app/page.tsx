@@ -13,7 +13,9 @@ export default function Home() {
     <main>
     <div id="content">
     <Header/>
+    <Suspense>
     <Intro/>
+    </Suspense>
     </div>
     </main>
     )
