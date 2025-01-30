@@ -10,6 +10,7 @@ import { Suspense } from 'react'
 import ExpandingArrow from '@/components/expanding-arrow'
 
 import terms from "@/app/terms.json"
+import { auth } from "@/auth"
 import definitions from "@/app/definitions.json"
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +20,7 @@ interface Query {
 }
 
 export default async function Page({params,}: {params: Promise<{ id: string }>}) {
+  const session = await auth()
   const id = (await params).id
   //const termsFile = await fs.readFile(process.cwd() + '/utils/terms.json', 'utf8');
   //const terms = JSON.parse(termsFile);

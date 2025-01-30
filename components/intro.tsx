@@ -22,6 +22,9 @@ ReproHum project, where we are comparing different types of evaluation to see wh
           <Link href="/informed-consent">
             <button type="button" className="btn btn-outline-primary btn-lg">Continue</button>
           </Link>
+          <Link href="/api/auth/signout">
+            <button type="button" className="btn btn-outline-primary ml-10 btn-lg">Sign out</button>
+          </Link>
         </div>
       </div>
     </div>

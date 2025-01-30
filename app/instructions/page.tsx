@@ -5,10 +5,12 @@ import Header from '@/components/header'
 import Instructions from '@/components/instructions'
 import { Suspense } from 'react'
 import ExpandingArrow from '@/components/expanding-arrow'
+import { auth } from "@/auth"
 
 export const dynamic = 'force-dynamic'
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
   return (
     <main>
     <div id="content">
