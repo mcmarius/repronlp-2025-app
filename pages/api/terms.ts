@@ -13,9 +13,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   // console.log(`got ${response} from client`)
   //console.log(response)
   var now = new Date();
-  console.log(`[INFO][${now.toISOString()}] make redis query with key ${response.uid}#${response.qid} and value ${JSON.stringify(response.data)}`)
-  response.data.ts = now
-  await redis.hset(`${response.uid}#${response.qid}`, response.data)
+  console.log(`[INFO][${now.toISOString()}] make redis consent query with key ${response.uid} and value yes`)
+  await redis.hset('USER_CONSENTS', {uid: response.uid, consent: 'yes', ts: now})
 
   res.status(201).json({ message: 'Form submitted successfully' });
 };

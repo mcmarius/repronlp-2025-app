@@ -6,7 +6,7 @@ export const config = {
   cookies: { sessionToken: { name: `next-auth.session-token`, options: { httpOnly: false } } },
 }
 export default auth((req) => {
-  console.log(`have req ${JSON.stringify(req)} with ${req.nextUrl.pathname}`)
+  // console.log(`have req ${JSON.stringify(req)} with ${req.nextUrl.pathname}`)
   if (!req.auth && req.nextUrl.pathname !== "/api/auth/signin") {
     const newUrl = new URL("/api/auth/signin", req.nextUrl.origin)
     return Response.redirect(newUrl)

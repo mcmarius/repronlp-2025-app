@@ -8,7 +8,11 @@ import { FormEvent } from 'react'
 //import { yupResolver } from '@hookform/resolvers/yup';
 //import * as Yup from 'yup';
 
-export default function InformedConsent() {
+interface ConsentProps {
+  uid: string,
+}
+
+export default function InformedConsent(props: ConsentProps) {
     const router = useRouter()
     // form validation rules 
     //const validationSchema = Yup.object().shape({
@@ -23,6 +27,11 @@ export default function InformedConsent() {
     const onSubmitFunc = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       console.log('accepted terms')
+      fetch('/api/terms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({uid: props.uid}),
+      });
       
       router.push("/instructions")
     }

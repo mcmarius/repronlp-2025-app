@@ -50,15 +50,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: true,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(`in signin callback w/ ${credentials}`)
+      // console.log(`in signin callback w/ ${credentials}`)
       return true // APP_USERS.include(profile.username)
     },
     async session({ session, user, token }) {
-      console.log(`in session callback w/ ${JSON.stringify(session)} and ${user} ${token}`)
+      // console.log(`in session callback w/ ${JSON.stringify(session)} and ${user} ${token}`)
       return session
     },
     async jwt({ token, user, account, profile }) {
-      console.log(`in jwt callback w/ ${JSON.stringify(token)} and ${user} ${account} ${profile}`)
+      // console.log(`in jwt callback w/ ${JSON.stringify(token)} and ${user} ${account} ${profile}`)
       if (user) {
         token.user = user;
       }
@@ -76,25 +76,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        console.log('first')
+        // console.log('first')
         try {
           let user = null
-          console.log('second')
+          // console.log('second')
           // const { username, password } = await signInSchema.parseAsync(credentials)
-          console.log('third')
-          console.log(`trying user ${credentials.username} 1`) 
+          // console.log('third')
+          // console.log(`trying user ${credentials.username} 1`) 
           // logic to salt and hash password
           // const pwHash = saltAndHashPassword(credentials.password)
    
           // logic to verify if the user exists
           user = await getUserFromDb(redis, credentials.username as string, credentials.password as string)
-          console.log(`trying user ${credentials.username}, got ${JSON.stringify(user)}`) 
+          // console.log(`trying user ${credentials.username}, got ${JSON.stringify(user)}`) 
           if (!user) {
             // No user found, so this is their first attempt to login
             // Optionally, this is also the place you could do a user registration
             throw new Error("Invalid credentials.")
           }
-          console.log('here')
+          // console.log('here')
    
           // return user object with their profile data
           if(user != null && user != undefined)

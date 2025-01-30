@@ -15,7 +15,7 @@ export default async function Home() {
     <main>
     <div id="content">
     <Header/>
-    <InformedConsent/>
+    <InformedConsent uid={session?.user.name || 'unknown_user'}/>
     </div>
     </main>
     )
