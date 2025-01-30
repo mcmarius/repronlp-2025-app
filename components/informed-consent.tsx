@@ -48,7 +48,7 @@ export default function InformedConsent() {
                         <label htmlFor="acceptTerms" className="form-check-label">
                         I have received and signed a consent form for this study and
                         I agree to take part in the project<br/>
-                        "ReproHum – Evaluation of computer-generated scientific definitions"</label>
+                        &quot;ReproHum – Evaluation of computer-generated scientific definitions&quot;</label>
                         <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
                     </div>
                     <div className="form-group">
