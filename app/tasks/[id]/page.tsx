@@ -21,6 +21,7 @@ interface Query {
 
 export default async function Page({params,}: {params: Promise<{ id: string }>}) {
   const session = await auth()
+  console.log(`sess: ${JSON.stringify(session)}`)
   const id = (await params).id
   //const termsFile = await fs.readFile(process.cwd() + '/utils/terms.json', 'utf8');
   //const terms = JSON.parse(termsFile);
@@ -34,7 +35,7 @@ export default async function Page({params,}: {params: Promise<{ id: string }>})
     <main>
     <div id="content">
     <Header/>
-    <TaskForm id={id} term={term?.term_text || ''} definition={definitions[id as unknown as number].def_text}/>
+    <TaskForm uid={session?.user.name || 'unknown_user'} id={id} term={term?.term_text || ''} definition={definitions[id as unknown as number].def_text}/>
     </div>
     </main>
     )

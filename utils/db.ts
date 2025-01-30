@@ -3,23 +3,27 @@ import { hash, compare } from 'bcrypt-ts'
 // const bcrypt = require('bcrypt')
 import { Redis } from "@upstash/redis"
 
+
+
 //export async function genPassword
 
-export async function createUser(redis, username, password) {
+export async function createUser(redis: Redis, username: string, password: string) {
     //bcrypt.genSalt(10, function(err, salt) {
-    return await hash(password, 10, function(err, hsh) {
-        if(err) {
-            return false
-        }
+    //let result : boolean
+    const hsh = await hash(password, 10) //, function(err, hsh) {
+        //if(err) {
+        //    result = false
+        //}
         redis.hset('USERS', {[username]: hsh})
         redis.hset('PROFILES', {[username]: {displayName: username}})
-        return true
-      });
+        //result = true
+      //});
+    //return result
 }
 
-export async function getUserFromDb(redis, username, password) {
+export async function getUserFromDb(redis: Redis, username: string, password: string) {
     console.log(`try ${username}`)
-    let db_pw = await redis.hget('USERS', username) || ''
+    let db_pw = await redis.hget('USERS', username) as string || ''
     console.log(`have ${db_pw}`)
     const ok = await compare(password, db_pw);
     console.log(`it is ${ok}`)

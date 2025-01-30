@@ -4,6 +4,7 @@ import { FormEvent, MouseEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface TaskFormProps {
+  uid: string,
   id: string;
   term: string;
   definition: string;
@@ -71,7 +72,7 @@ const TaskForm = (props: TaskFormProps) => {
     fetch('/api/task', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({uid: 'USER_ID', qid: currentId, data: {q1: answer.value, q2: answer2.value }}),
+      body: JSON.stringify({uid: props.uid, qid: currentId, data: {q1: answer.value, q2: answer2.value }}),
     });
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
