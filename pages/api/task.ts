@@ -13,6 +13,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   })
   var now = new Date();
   console.log(`[INFO][${now.toISOString()}] make redis query with key ${response.uid}#${response.qid} and value ${JSON.stringify(response.data)}`)
+  response.data.ts = now
   await redis.hset(`${response.uid}#${response.qid}`, response.data)
 
   res.status(201).json({ message: 'Form submitted successfully' });
