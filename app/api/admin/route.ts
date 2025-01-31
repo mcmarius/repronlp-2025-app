@@ -1,4 +1,4 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from "next/server"
 import { Redis } from '@upstash/redis'
 import { auth } from "@/auth"
 
@@ -8,8 +8,6 @@ const redis = new Redis({
   url: process.env.KV_REST_API_URL,
   token: process.env.KV_REST_API_TOKEN,
 })
-//import { auth } from "@/auth"
-import { NextResponse } from "next/server"
 
 export const GET = auth(async function GET(req) {
   if(!req.auth)
@@ -79,46 +77,3 @@ export const DELETE = auth(async function DELETE(req) {
   }
   return NextResponse.json({ data: db_response }, { status: 200 })
 }) as any;
-/*
-export default async function handler (req: NextApiRequest, res: NextApiResponse) {
-  // console.log(`auth is ${auth}`)
-  /*const req2 = await req
-  const res2 = await res
-  const session = await auth(req2, res2)
-  if(!session) {
-      res.status(401).json({error: "Unauthorized"})
-      return
-  }
-  if(session.user.role !== process.env.ADMIN_ROLE) {
-      res.status(403).json({error: "Forbidden"})
-      return
-  }* /
-  const query = req.query
-  // console.log(`in admin handler ${query.command} ${query.uid}`)
-  let db_response = null
-  if(query.command === "get_user" && query.uid) {
-      db_response = await redis.hget('PROFILES', query.uid)
-  }
-  else if(query.command === "delete_user" && query.uid) {
-      db_response = await redis.hdel('PROFILES', query.uid)
-      db_response = await redis.del(`USERS#${query.uid}`)
-  }
-  else if(query.command === "create_user" && query.uid && query.pw) {
-      db_response = await createUser(redis, query.uid, query.pw, query.role || 'user')
-  }
-  //else if(query.command === "get_question" && query.uid && query.qid)
-  //    db_response = await redis.hgetall(`RESPONSES`#${query.uid}#${query.qid}`)
-  else if(query.command === "get_questions" && query.uid) {
-      db_response = await redis.hget(`RESPONSES`, query.uid)
-      //db_response = []
-      //for(let i = 0; i < 3; i++) {
-      //    db_response += [await redis.hgetall(`RESPONSES#${query.uid}#${i}`)]
-      //}
-  }
-  else if(query.command === "get_consent" && query.uid)
-      db_response = await redis.hgetall(`USER_CONSENTS`)
-  console.log(db_response)
-
-  res.status(200).json({ data: db_response });
-};
-*/
