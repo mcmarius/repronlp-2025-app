@@ -107,14 +107,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // return user object with their profile data
           if(user != null && user != undefined)
               return {_id: 1, email: '', name: credentials.username, role: user.role} as User
-          return {} as User // null // {username: credentials.username, password}
+          return null
         } catch (error) {
           if (error instanceof ZodError) {
             // Return `null` to indicate that the credentials are invalid
-            return {} as User //null
+            return null
           }
         }
-        return {} as User // null
+        return null
       },
       //authorized: async ({ auth }) => {
       //  //return true
