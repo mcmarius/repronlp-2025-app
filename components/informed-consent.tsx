@@ -2,18 +2,18 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FormEvent } from 'react'
+import { FormEvent, use } from 'react'
 
 //import { useForm } from 'react-hook-form';
 //import { yupResolver } from '@hookform/resolvers/yup';
 //import * as Yup from 'yup';
 
-interface ConsentProps {
-  uid: string,
-}
 
-export default function InformedConsent(props: ConsentProps) {
+export default function InformedConsent({sessionObj}:{sessionObj: Promise<any>}) {
+    const session = use(sessionObj)
     const router = useRouter()
+    const uid = session?.user.name || 'unknown_user'
+    
     // form validation rules 
     //const validationSchema = Yup.object().shape({
     //    acceptTerms: Yup.bool()
@@ -30,7 +30,7 @@ export default function InformedConsent(props: ConsentProps) {
       fetch('/api/terms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({uid: props.uid}),
+        body: JSON.stringify({uid: uid}),
       });
       
       router.push("/instructions")

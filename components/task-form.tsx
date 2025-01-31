@@ -66,13 +66,15 @@ const TaskForm = (props: TaskFormProps) => {
     //const answer = target.answer.value;
     //const answer2 = target.answer2.value;
     const form = event.target as HTMLFormElement;
-    const answer = form.querySelector('input[name="answer"]') as HTMLInputElement;
-    const answer2 = form.querySelector('input[name="answer2"]') as HTMLInputElement;
-    // console.log(`have ${answer2}`)
+    const answerItems = form.querySelectorAll('input[name="answer"]') as NodeListOf<HTMLInputElement>;
+    const answer2Items = form.querySelectorAll('input[name="answer2"]') as NodeListOf<HTMLInputElement>;
+    const answer = Array.from(answerItems).find((e) => e.checked)?.value || '';
+    const answer2 = Array.from(answer2Items).find((e) => e.checked)?.value || '';
+    console.log(`task: q1 ${answer} q2 ${answer2}`)
     fetch('/api/task', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({uid: props.uid, qid: currentId, data: {q1: answer.value, q2: answer2.value }}),
+      body: JSON.stringify({uid: props.uid, qid: currentId, data: {q1: answer, q2: answer2 }}),
     });
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
@@ -113,26 +115,24 @@ const TaskForm = (props: TaskFormProps) => {
   };
   return (
     <div id="task-box" className="instructions-stim-container">
-      <div className="row">
+    <div className="row container d-flex">
+    <form id="task-form" onSubmit={handleSubmit}>
           <div className="col d-flex justify-content-left">
             <h6>You are currently on section {props.id} / 300</h6><br/>
             <div className="mt-4 p-2"></div> <br/>
           </div>
-      </div>
-    <div className="row container d-flex">
-    <form onSubmit={handleSubmit}>
       {currentQuestion && (
         <div>
-          <div className="col-9 mb-8" style={styles.text}>
+          <div className="col mb-8" style={styles.text}>
 	          <h5>Instructions</h5>
 	          <div style={styles.horizontalLine} />
 	          <p><strong>Please read the following text and answer the questions below.</strong></p>
 	          <p>You will first be asked whether the definitions contain any factual inaccuracies (yes or no) and then, if yes, you will be asked to rate the severity of the inaccuracies on a scale from <strong>1 (lowest)</strong> to <strong>4 (highest)</strong>.</p>
 	          <p>When you do not know whether a definition is factually inaccurate, please use an internet search to check.</p>
 	        </div>
-	        <div className="col-9 mb-8" style={styles.text}>
-          <div className="p-2"><strong>Term:</strong>{currentQuestion.term}</div>
-          <div className="p-2 mb-2"><strong>Definition:</strong>{currentQuestion.definition}</div>
+	        <div className="col mb-8" style={styles.text}>
+          <div className="p-2"><strong>Term:</strong> {currentQuestion.term}</div>
+          <div className="p-2 mb-2"><strong>Definition:</strong> {currentQuestion.definition}</div>
           </div>
           <div>
           <p>Does this definition contain factually incorrect information?</p>
@@ -146,7 +146,7 @@ const TaskForm = (props: TaskFormProps) => {
                   name="answer"
                   value={option.value}
                 />
-                <label className="col-1 ml-4" htmlFor={option.id}>{option.value}</label>
+                <label className="ml-4" htmlFor={option.id}>{option.value}</label>
               </div>
             ))}
           </div>

@@ -9,19 +9,20 @@ export default function Instructions() {
     }
 
     return (
-    <div id="instr-box" className="instructions-stim-container">
+    <div id="instr-box" className="instructions-stim-container" style={{width: '1000px', padding: '20px'}}>
       <div className="row">
         <div className="col d-flex justify-content-left">
           <h2 className="bolded">Instructions</h2>
         </div>
       </div>
-      <div className="col-20 justify-content-left align-self-left">
-      You will be given 300 terms with their definitions and asked to rate the factual truth of the definitions.
-      <br/><br/>
-      You will first be asked whether the definitions contain any factual inaccuracies (yes or no) and then, if yes, you will be asked to rate the severity of the inaccuracies on a scale from <strong>1 (lowest)</strong> to <strong>4 (highest)</strong> <br/><br/>
-      When you do not know whether a definition is factually inaccurate, please use an internet search to check. <br/>
+      <div className="row">
+        <div className="col-20 text-wrap justify-content-left align-self-left">
+        <p>You will be given 300 terms with their definitions and asked to rate the factual truth of the definitions.</p>
+      
+        <p>You will first be asked whether the definitions contain any factual inaccuracies (yes or no) and then, if yes, you will be asked to rate the severity of the inaccuracies on a scale from <strong>1 (lowest)</strong> to <strong>4 (highest)</strong></p>
+        <p>When you do not know whether a definition is factually inaccurate, please use an internet search to check.</p>
+        </div>
       </div>
-      <br/>
       <div className="grid gap-0">
       Examples of definitions with no factual inaccuracies:
       <div className="p-4"><strong>Term:</strong> Acanthoma <br/>
@@ -29,7 +30,7 @@ export default function Instructions() {
       <strong>Term:</strong> Transformer <br/>
       <strong>Definiton:</strong> The Transformer is a deep learning model architecture relying entirely on an attention mechanism to draw global dependencies between input and output.
       </div>
-      </div><br/>
+      </div>
       <div className="grid gap-0">
       Examples of factually inaccurate definitions:
       <div className="p-4"><strong>Term:</strong> Acanthoma <br/>

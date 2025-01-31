@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Redis } from '@upstash/redis'
+import { auth } from "@/auth"
 
 const redis = new Redis({
   url: process.env.KV_REST_API_URL,
@@ -7,15 +8,21 @@ const redis = new Redis({
 })
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse) {
-  const response = req.body;
-  // Save the answers to Redis
-  // ...
-  // console.log(`got ${response} from client`)
-  //console.log(response)
+  /*const session = await auth(req)
+  if(!session) {
+      res.status(401).json({error: "Unauthorized"})
+      return
+  }
+  // TODO assert session uid == params uid
+  if(session.user.name !== params.uid) {
+      res.status(403).json({error: "Forbidden"})
+      return
+  }*/
+  const params = req.body;
   var now = new Date();
-  console.log(`[INFO][${now.toISOString()}] make redis query with key ${response.uid}#${response.qid} and value ${JSON.stringify(response.data)}`)
-  response.data.ts = now
-  await redis.hset(`${response.uid}#${response.qid}`, response.data)
+  console.log(`[INFO][${now.toISOString()}] make redis query with key ${params.uid}#${params.qid} and value ${JSON.stringify(params.data)}`)
+  params.data.ts = now
+  await redis.hset(`RESPONSES`, {[`${params.uid}#${params.qid}`]: params.data})
 
   res.status(201).json({ message: 'Form submitted successfully' });
 };

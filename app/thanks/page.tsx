@@ -6,12 +6,14 @@ import { auth } from "@/auth"
 
 export const dynamic = 'force-dynamic'
 
-export default async function Home() {
-  const session = await auth()
+export default function Home() {
+  const session = auth()
   return (
     <main>
     <div id="content">
-    <Header/>
+    <Suspense>
+    <Header sessionObj={session}/>
+    </Suspense>
     <div id="thanks-box" className="instructions-stim-container">
     <div className="row">
       <div className="col d-flex justify-content-center">
@@ -19,9 +21,6 @@ export default async function Home() {
       </div>
     <div className="row">
       <div className="col d-flex justify-content-center">
-          <Link href="/api/auth/signout">
-            <button type="button" className="btn btn-outline-primary mt-8 btn-lg">Sign out</button>
-          </Link>
       </div>
     </div>
     </div>

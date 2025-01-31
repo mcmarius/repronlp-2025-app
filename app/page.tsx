@@ -8,12 +8,14 @@ import ExpandingArrow from '@/components/expanding-arrow'
 import { auth } from "@/auth"
 
 export const dynamic = 'force-dynamic'
-export default async function Home() {
-  const session = await auth()
+export default function Home() {
+  const session = auth()
   return (
     <main>
     <div id="content">
-    <Header/>
+    <Suspense>
+    <Header sessionObj={session}/>
+    </Suspense>
     <Intro/>
     </div>
     </main>

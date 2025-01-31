@@ -20,8 +20,9 @@ interface Query {
 }
 
 export default async function Page({params,}: {params: Promise<{ id: string }>}) {
-  const session = await auth()
   // console.log(`sess: ${JSON.stringify(session)}`)
+  const session = await auth()
+  const sessionObj = auth()
   let idStr = (await params).id
   let id = Number(idStr) || 0
   if(id < 1 || id > 300) {
@@ -39,7 +40,7 @@ export default async function Page({params,}: {params: Promise<{ id: string }>})
   return (
     <main>
     <div id="content">
-    <Header/>
+    <Header sessionObj={sessionObj}/>
     <TaskForm uid={session?.user.name || 'unknown_user'} id={idStr} term={term?.term_text || ''} definition={definitions[id - 1].def_text}/>
     </div>
     </main>

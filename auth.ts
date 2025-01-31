@@ -6,7 +6,7 @@ import Credentials from "next-auth/providers/credentials"
 // import { saltAndHashPassword } from "@/utils/password"
 //import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter"
 import { Redis } from "@upstash/redis"
- 
+
 import { getUserFromDb } from "@/utils/db"
  
 const redis = new Redis({
@@ -19,21 +19,25 @@ interface SafeUserType {
   name?: string,
   username?: string,
   password?: string,
-  displayName?: string
+  displayName?: string,
+  role?: string,
 }
 declare module 'next-auth' {
   interface Session extends DefaultSession {
-    user: SafeUserType; // your user type
+    user: SafeUserType, // your user type
+    role: string
   }
 
   interface User extends SafeUserType {}
 }
+import { Session } from 'next-auth'
 // The `JWT` interface can be found in the `next-auth/jwt` submodule
 import { JWT } from "next-auth/jwt"
  
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
   interface JWT {
+    role: string,
   }
 }
 //declare module 'next-auth/jwt' {
@@ -47,20 +51,22 @@ const APP_USERS = ['test1', 'test2']
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   //adapter: UpstashRedisAdapter(redis, { baseKeyPrefix: "repronlp-2025-definitions:" }),
-  debug: true,
+  debug: false,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       // console.log(`in signin callback w/ ${credentials}`)
       return true // APP_USERS.include(profile.username)
     },
-    async session({ session, user, token }) {
+    async session({ session, user, token }: {session: Session, user: User, token: JWT}) {
+      session.user.role = token.role
       // console.log(`in session callback w/ ${JSON.stringify(session)} and ${user} ${token}`)
       return session
     },
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user }: {token: JWT, user: User}) {
       // console.log(`in jwt callback w/ ${JSON.stringify(token)} and ${user} ${account} ${profile}`)
       if (user) {
-        token.user = user;
+        token.user = user
+        token.role = user.role || 'user'
       }
       return token;
     },
@@ -72,13 +78,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // You can specify which fields should be submitted, by adding keys to the `credentials` object.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Username", type: "text", required: true },
+        password: { label: "Password", type: "password", required: true },
       },
       authorize: async (credentials) => {
         // console.log('first')
         try {
-          let user = null
+          let user : User = {}
           // console.log('second')
           // const { username, password } = await signInSchema.parseAsync(credentials)
           // console.log('third')
@@ -87,26 +93,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // const pwHash = saltAndHashPassword(credentials.password)
    
           // logic to verify if the user exists
-          user = await getUserFromDb(redis, credentials.username as string, credentials.password as string)
+          user = await getUserFromDb(redis, credentials.username as string, credentials.password as string) as User
           // console.log(`trying user ${credentials.username}, got ${JSON.stringify(user)}`) 
           if (!user) {
             // No user found, so this is their first attempt to login
             // Optionally, this is also the place you could do a user registration
             throw new Error("Invalid credentials.")
           }
+          if(!user['role'])
+              user['role'] = 'user'
           // console.log('here')
    
           // return user object with their profile data
           if(user != null && user != undefined)
-              return {_id: 1, email: '', name: credentials.username} as User
-          return null // {username: credentials.username, password}
+              return {_id: 1, email: '', name: credentials.username, role: user.role} as User
+          return {} as User // null // {username: credentials.username, password}
         } catch (error) {
           if (error instanceof ZodError) {
             // Return `null` to indicate that the credentials are invalid
-            return null
+            return {} as User //null
           }
         }
-        return null
+        return {} as User // null
       },
       //authorized: async ({ auth }) => {
       //  //return true
