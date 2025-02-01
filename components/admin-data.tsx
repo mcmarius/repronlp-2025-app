@@ -23,11 +23,11 @@ export default async function AdminData() {
     //console.log(`admin data tok ${token.value}: ${JSON.stringify(aa)}`)
     const csrfPrefix = process.env.VERCEL ? '__Host-' : ''
     const cookiePrefix = process.env.VERCEL ? '__Secure-' : ''
-    const csrf0 = cookieStore.get(`${csrfPrefix}authjs.csrf-token`)
+    const csrf0 = cookieStore.get(`${csrfPrefix}authjs.csrf-token`) || {value: ''}
     const token = cookieStore.get(`${cookiePrefix}authjs.session-token`)
     const baseURL = process.env.VERCEL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'
     const baseURLencoded = encodeURIComponent(baseURL)
-    const csrf = encodeURIComponent(csrf0.value)
+    const csrf = encodeURIComponent(csrf0?.value)
     //const csrf: CsrfType = await fetch(`${baseURL}/api/auth/csrf`, {
     //  method: 'GET',
     //  headers: { 'Content-Type': 'application/json', 'Cookie': `${cookiePrefix}authjs.session-token=${token?.value}` },
