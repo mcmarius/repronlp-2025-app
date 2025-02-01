@@ -20,6 +20,9 @@ export default auth((req) => {
     return Response.redirect(new URL("/", req.nextUrl.origin))
   }
 })
+
+// ?? https://github.com/nextauthjs/next-auth/discussions/10058
+
 /*
 export function middleware(request: NextRequest) {
   const sess = auth(request)

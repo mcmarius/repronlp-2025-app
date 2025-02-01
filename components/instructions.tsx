@@ -9,7 +9,7 @@ export default function Instructions() {
     }
 
     return (
-    <div id="instr-box" className="instructions-stim-container" style={{width: '1000px', padding: '20px'}}>
+    <div id="instr-box" className="instructions-stim-container" style={{width: '900px', padding: '20px'}}>
       <div className="row">
         <div className="col d-flex justify-content-left">
           <h2 className="bolded">Instructions</h2>

@@ -9,6 +9,9 @@ const redis = new Redis({
   token: process.env.KV_REST_API_TOKEN,
 })
 
+// Maybe TODO to avoid the workaround with "as any"
+// https://github.com/nextauthjs/next-auth/issues/12224
+
 export const GET = auth(async function GET(req) {
   if(!req.auth)
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
