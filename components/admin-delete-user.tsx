@@ -7,6 +7,7 @@ interface DeleteUserProps {
   baseURL: string;
   cookie: string;
   uid: string;
+  disabled: boolean;
 }
 
 export default function AdminDeleteUser(props: DeleteUserProps) {
@@ -14,6 +15,7 @@ export default function AdminDeleteUser(props: DeleteUserProps) {
     const baseURL = props.baseURL
     const cookie = props.cookie
     const uid = props.uid
+    const disabled = props.disabled
 
     const deleteUser = async ( e: MouseEvent) => {
       // e.preventDefault();
@@ -22,9 +24,15 @@ export default function AdminDeleteUser(props: DeleteUserProps) {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 'Cookie': cookie },
       })
-      router.refresh()
+      let parent = document.getElementById('user-list');
+      if (parent) {
+        let toDelete = Array.from(parent.children).find((e) => e.id == `user-list-${uid}`)
+        if(toDelete && toDelete.firstChild) {
+          toDelete.removeChild(toDelete.firstChild);
+        }
+      }
     }
     return (
-      <button onClick={deleteUser} className="btn position-absolute end-0 btn btn-sm btn-danger">Delete</button>
+      <button disabled={disabled} onClick={deleteUser} className="btn position-absolute end-0 btn btn-sm btn-danger">Delete</button>
     )
 }

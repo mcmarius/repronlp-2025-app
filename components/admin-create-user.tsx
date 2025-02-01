@@ -33,7 +33,7 @@ export default function AdminCreateUser(props: CreateUserProps) {
             <label className="form-label" htmlFor="add-user-user">User</label>
             </div>
             <div className="col-2">
-            <input id="add-user-user" className="form-control" name="uid" defaultValue="testuser" type="text"/>
+            <input required id="add-user-user" className="form-control" name="uid" defaultValue="testuser" type="text"/>
             </div>
           </div>
           <div className="row">
@@ -41,7 +41,7 @@ export default function AdminCreateUser(props: CreateUserProps) {
             <label htmlFor="add-user-pw">Password</label>
             </div>
             <div className="col-2">
-              <input id="add-user-pw" className="form-control" name="pw" type="password"/>
+              <input required id="add-user-pw" className="form-control" name="pw" type="password"/>
             </div>
           </div>
           <div className="row">

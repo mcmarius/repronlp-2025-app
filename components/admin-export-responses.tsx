@@ -28,7 +28,7 @@ export default function AdminExportResponses(props: ExportResponsesProps) {
       let parent = (e.target as HTMLElement ).parentNode as HTMLElement;
       parent.appendChild(a);
       parent.removeChild(e.target as HTMLElement);
-      console.log('clicked')
+      // console.log('clicked')
     }
     return (
     <div>

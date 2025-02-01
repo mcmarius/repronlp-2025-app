@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import AdminCreateUser from '@/components/admin-create-user'
 //import AdminDeleteUser from '@/components/admin-delete-user'
 import AdminUserList from '@/components/admin-user-list'
-import AdminExportResponses from '@/components/admin-export-responses'
+import AdminUserResponses from '@/components/admin-user-responses'
 import { auth } from "@/auth"
 import { cookies } from 'next/headers'
 import Request from 'next'
@@ -19,8 +19,9 @@ interface CsrfType extends Request {
 export default async function AdminData() {
 //    const router = useRouter()
     const cookieStore = await cookies()
-    const aa = await auth()
-    //console.log(`admin data tok ${token.value}: ${JSON.stringify(aa)}`)
+    const session = await auth()
+    // console.log(`admin data auth ${JSON.stringify(session)}`)
+    const user = session?.user.name || 'unknown_user'
     const csrfPrefix = process.env.VERCEL ? '__Host-' : ''
     const cookiePrefix = process.env.VERCEL ? '__Secure-' : ''
     const csrf0 = cookieStore.get(`${csrfPrefix}authjs.csrf-token`) || {value: ''}
@@ -28,80 +29,27 @@ export default async function AdminData() {
     const baseURL = process.env.VERCEL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'
     const baseURLencoded = encodeURIComponent(baseURL)
     const csrf = encodeURIComponent(csrf0?.value)
-    //const csrf: CsrfType = await fetch(`${baseURL}/api/auth/csrf`, {
-    //  method: 'GET',
-    //  headers: { 'Content-Type': 'application/json', 'Cookie': `${cookiePrefix}authjs.session-token=${token?.value}` },
-    //}) as unknown as CsrfType
     const newCookie = `${csrfPrefix}authjs.csrf-token=${csrf}; ${cookiePrefix}authjs.callback-url=${baseURLencoded}; ${cookiePrefix}authjs.session-token=${token?.value}`
-    console.log(`new cookie: ${newCookie}`)
-    console.log(`new csrf: ${JSON.stringify(csrf)}`)
-    console.log(`new tok: ${token?.value}`)
+    // console.log(`new cookie: ${newCookie}`)
+    // console.log(`new csrf: ${JSON.stringify(csrf)}`)
+    // console.log(`new tok: ${token?.value}`)
 
-    /*let users
-    if(!usersData.ok) {
-        users = {data: {}}
-    }
-    else {
-        users = await usersData.json()
-    }*/
-    //console.log(`admin data: ${Object.entries(users.data)}`)
-    //Object.entries(users.data).map((user) => (
-    //    console.log(`-> ${user[0]} with ${user[1].displayName}`)
-    //))
-    const getResponsesParams = new URLSearchParams({command: "get_responses"}).toString()
-    const responsesData = await fetch(`${baseURL}/api/admin?${getResponsesParams}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': newCookie },
-    })
-    let responses
-    if(!responsesData.ok) {
-        responses = {data: {}}
-    }
-    else {
-        responses = await responsesData.json()
-    }
-    //console.log(`admin data: ${Object.entries(responses.data)}`)
-    //Object.entries(responses.data).map((response) => (
-    //    console.log(`-> ${response[0]} with ${response[1].q1}`)
-    //))
-    // credits to https://github.com/colin-stubbs/js-download-json-from-browser/blob/master/example.html
 
 
   return (
     <div>
       <h4 className="ml-4">User list</h4>
         <Suspense>
-        <AdminUserList baseURL={baseURL} cookie={newCookie}/>
+        <AdminUserList user={user} baseURL={baseURL} cookie={newCookie}/>
         </Suspense>
       <div>
         <h5>Create/update user</h5>
         <AdminCreateUser baseURL={baseURL} cookie={newCookie}/>
       </div>
 
-      <AdminExportResponses responses={JSON.stringify(responses.data)}/>
-      <h4 className="ml-4">Responses</h4>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">User#question</th>
-            <th scope="col">Factually inacurrate?</th>
-            <th scope="col">How inacurrate?</th>
-            <th scope="col">Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(responses.data).map((response: any[], i) => (
-            <tr id={`response-${i}`} key={i} className="col-2">
-              <th scope="row">{i + 1}</th>
-              <td>{response[0]}</td>
-                <td>{response[1].q1}</td>
-                <td>{response[1].q2}</td>
-                <td>{response[1].ts}</td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
+      {/*credits to https://github.com/dhiazfathra/nextjs-binary-file-download/blob/master/app/page.tsx */}
+
+      <AdminUserResponses baseURL={baseURL} cookie={newCookie}/>
     </div>
   )
 }
