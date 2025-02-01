@@ -1,9 +1,7 @@
 import NextAuth, { type DefaultSession, type User } from "next-auth"
-import { ZodError } from "zod"
-import { signInSchema } from "./lib/zod"
+
 import Credentials from "next-auth/providers/credentials"
-// Your own logic for dealing with plaintext password strings; be careful!
-// import { saltAndHashPassword } from "@/utils/password"
+
 //import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter"
 import { Redis } from "@upstash/redis"
 
@@ -13,6 +11,7 @@ const redis = new Redis({
   url: process.env.KV_REST_API_URL!,
   token: process.env.KV_REST_API_TOKEN!,
 })
+
 interface SafeUserType {
   id?: string,
   email?: string,
@@ -22,6 +21,7 @@ interface SafeUserType {
   displayName?: string,
   role?: string,
 }
+
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: SafeUserType, // your user type
@@ -30,7 +30,9 @@ declare module 'next-auth' {
 
   interface User extends SafeUserType {}
 }
+
 import { Session } from 'next-auth'
+
 // The `JWT` interface can be found in the `next-auth/jwt` submodule
 import { JWT } from "next-auth/jwt"
  
@@ -40,14 +42,6 @@ declare module "next-auth/jwt" {
     role: string,
   }
 }
-//declare module 'next-auth/jwt' {
-//  interface Database {
-//    user: SafeUserType;
-//  }
-//}
-
-
-const APP_USERS = ['test1', 'test2']
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   //adapter: UpstashRedisAdapter(redis, { baseKeyPrefix: "repronlp-2025-definitions:" }),
@@ -55,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       // console.log(`in signin callback w/ ${credentials}`)
-      return true // APP_USERS.include(profile.username)
+      return true
     },
     async session({ session, user, token }: {session: Session, user: User, token: JWT}) {
       session.user.role = token.role
@@ -82,17 +76,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password", required: true },
       },
       authorize: async (credentials) => {
-        // console.log('first')
         try {
           let user : User = {}
-          // console.log('second')
-          // const { username, password } = await signInSchema.parseAsync(credentials)
-          // console.log('third')
-          // console.log(`trying user ${credentials.username} 1`) 
-          // logic to salt and hash password
-          // const pwHash = saltAndHashPassword(credentials.password)
-   
-          // logic to verify if the user exists
           user = await getUserFromDb(redis, credentials.username as string, credentials.password as string) as User
           // console.log(`trying user ${credentials.username}, got ${JSON.stringify(user)}`) 
           if (!user) {
@@ -109,10 +94,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               return {_id: 1, email: '', name: credentials.username, role: user.role} as User
           return null
         } catch (error) {
-          if (error instanceof ZodError) {
-            // Return `null` to indicate that the credentials are invalid
+            console.log('Auth error')
             return null
-          }
         }
         return null
       },

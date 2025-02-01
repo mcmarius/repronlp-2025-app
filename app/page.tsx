@@ -1,23 +1,21 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import { Suspense } from 'react'
 
+import { auth } from "@/auth"
 import Header from '@/components/header'
 import Intro from '@/components/intro'
-import { Suspense } from 'react'
-import ExpandingArrow from '@/components/expanding-arrow'
-import { auth } from "@/auth"
 
 export const dynamic = 'force-dynamic'
+
 export default function Home() {
   const session = auth()
   return (
     <main>
-    <div id="content">
-    <Suspense>
-    <Header sessionObj={session}/>
-    </Suspense>
-    <Intro/>
-    </div>
+      <div id="content">
+        <Suspense>
+          <Header sessionObj={session}/>
+        </Suspense>
+        <Intro/>
+      </div>
     </main>
-    )
+  )
 }

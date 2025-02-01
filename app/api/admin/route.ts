@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { Redis } from '@upstash/redis'
-import { auth } from "@/auth"
 
+import { auth } from "@/auth"
 import { createUser } from "@/utils/db"
 
 const redis = new Redis({
@@ -21,7 +21,7 @@ export const GET = auth(async function GET(req) {
   const command = query.get('command')
   const uid = query.get('uid')
   console.log(`[DEBUG] get admin ${command}`)
-  //const query = req.query
+
   let db_response = null
   if(command === "get_user" && uid) {
       db_response = await redis.hget('PROFILES', uid)
@@ -50,7 +50,7 @@ export const POST = auth(async function POST(req) {
   const pw = query.get('pw')
   const role = query.get('role')
   console.log(`[DEBUG] post admin ${command}`)
-  //const query = req.query
+
   let db_response = null
   if(command === "create_user" && uid && pw) {
       db_response = await createUser(redis, uid, pw, role || 'user')
@@ -68,7 +68,7 @@ export const DELETE = auth(async function DELETE(req) {
   const uid = query.get('uid')
   const key = query.get('key')
   console.log(`[DEBUG] delete admin ${command}`)
-  //const query = req.query
+
   let db_response = null
   if(command === "delete_user" && uid) {
       await redis.hdel('PROFILES', uid)

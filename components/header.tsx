@@ -1,7 +1,9 @@
 'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { use } from 'react'
+
 import { auth } from "@/auth"
 
 export default function Header({sessionObj}:{sessionObj: Promise<any>}) {
@@ -26,7 +28,7 @@ export default function Header({sessionObj}:{sessionObj: Promise<any>}) {
             <ul className="dropdown-menu dropdown-menu-end">
               <li>
                 <Link href="/api/auth/signout">
-                  <button type="button" className="dropdown-item btn btn-outline-danger">Sign out</button>
+                  <button type="button" className="dropdown-item btn">Sign out</button>
                 </Link>
               </li>
             </ul>

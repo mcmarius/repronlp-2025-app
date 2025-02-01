@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
 import { Redis } from '@upstash/redis'
-import { auth } from "@/auth"
 
-import { createUser } from "@/utils/db"
+import { auth } from "@/auth"
 
 const redis = new Redis({
   url: process.env.KV_REST_API_URL,

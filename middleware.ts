@@ -9,6 +9,7 @@ export const config = {
 }
 export default auth((req) => {
   console.log(`have req ${JSON.stringify(req)} with ${req.nextUrl.pathname}`)
+  // for some reason this did not work with the matcher
   if(req.nextUrl.pathname == '/favicon.ico') {
     return NextResponse.next()
   }
@@ -22,16 +23,3 @@ export default auth((req) => {
 })
 
 // ?? https://github.com/nextauthjs/next-auth/discussions/10058
-
-/*
-export function middleware(request: NextRequest) {
-  const sess = auth(request)
-  console.log(`mid sess ${sess}`)
-  let cookie = request.cookies.get('authjs.session-token')
-  console.log(cookie) // => { name: 'nextjs', value: 'fast', Path: '/' }
-  //const allCookies = request.cookies.getAll()
-  //console.log(allCookies) // => [{ name: 'nextjs', value: 'fast' }]
-
-  return NextResponse.next()
-}
-*/

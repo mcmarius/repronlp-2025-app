@@ -1,23 +1,14 @@
-//'use client'
+import { cookies } from 'next/headers'
 
-import Link from 'next/link'
-import Form from 'next/form'
-//import { useRouter } from 'next/navigation'
 import { FormEvent, Suspense } from 'react'
 import { useState, useEffect } from 'react'
+
+import { auth } from "@/auth"
 import AdminCreateUser from '@/components/admin-create-user'
-//import AdminDeleteUser from '@/components/admin-delete-user'
 import AdminUserList from '@/components/admin-user-list'
 import AdminUserResponses from '@/components/admin-user-responses'
-import { auth } from "@/auth"
-import { cookies } from 'next/headers'
-import Request from 'next'
-interface CsrfType extends Request {
-    csrfToken: string
-}
 
 export default async function AdminData() {
-//    const router = useRouter()
     const cookieStore = await cookies()
     const session = await auth()
     // console.log(`admin data auth ${JSON.stringify(session)}`)
@@ -33,8 +24,6 @@ export default async function AdminData() {
     // console.log(`new cookie: ${newCookie}`)
     // console.log(`new csrf: ${JSON.stringify(csrf)}`)
     // console.log(`new tok: ${token?.value}`)
-
-
 
   return (
     <div>
