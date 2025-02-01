@@ -1,8 +1,6 @@
 import './globals.css'
 import './css/bootstrap.min-5_3_0.css'
 import './css/bootstrap-icons-1.11.3.css'
-import './css/alpaca.min-1.5.23.css'
-// import './css/shareon.min-2.5.0.css'
 import './css/litw-styles-2.0.0.css'
 import { Inter } from 'next/font/google'
 
