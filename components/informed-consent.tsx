@@ -48,12 +48,12 @@ export default function InformedConsent({sessionObj}:{sessionObj: Promise<any>})
 
     return (
     <div id="consent-box" className="instructions-stim-container">
-      <div className="row">
+      <div className="row g-0">
         <div className="col d-flex justify-content-center">
           <h2 className="bolded-blue">ReproNLP Definitions Accuracy: Informed consent</h2>
         </div>
       </div>
-      <div className="row">
+      <div className="row g-0">
         <div className="col d-flex justify-content-center align-self-center">
                 <form onSubmit={onSubmitFunc}>
                     <div className="form-group form-check">

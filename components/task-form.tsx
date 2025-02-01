@@ -107,9 +107,10 @@ const TaskForm = (props: TaskFormProps) => {
       borderRadius: '5px',
     },
     horizontalLine: {
-      width: 'calc(100% + 20px)',
+      width: 'calc(100% + 30px)',
       height: '2px',
-      backgroundColor: 'lightblue',
+      'backgroundColor': 'lightblue',
+      '--bs-border-color': 'lightblue',
       margin: '10px 0px 10px -10px',
     },
   };
@@ -125,7 +126,7 @@ const TaskForm = (props: TaskFormProps) => {
         <div>
           <div className="col mb-8" style={styles.text}>
 	          <h5>Instructions</h5>
-	          <div style={styles.horizontalLine} />
+	          <hr className="g-0 border opacity-100" style={styles.horizontalLine}></hr>
 	          <p><strong>Please read the following text and answer the questions below.</strong></p>
 	          <p>You will first be asked whether the definitions contain any factual inaccuracies (yes or no) and then, if yes, you will be asked to rate the severity of the inaccuracies on a scale from <strong>1 (lowest)</strong> to <strong>4 (highest)</strong>.</p>
 	          <p>When you do not know whether a definition is factually inaccurate, please use an internet search to check.</p>

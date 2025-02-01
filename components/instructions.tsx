@@ -9,13 +9,13 @@ export default function Instructions() {
     }
 
     return (
-    <div id="instr-box" className="instructions-stim-container" style={{width: '900px', padding: '20px'}}>
-      <div className="row">
+    <div id="instr-box" className="instructions-stim-container">
+      <div className="row g-0">
         <div className="col d-flex justify-content-left">
           <h2 className="bolded">Instructions</h2>
         </div>
       </div>
-      <div className="row">
+      <div className="row g-0">
         <div className="col-20 text-wrap justify-content-left align-self-left">
         <p>You will be given 300 terms with their definitions and asked to rate the factual truth of the definitions.</p>
       
@@ -42,11 +42,11 @@ export default function Instructions() {
       <strong>Please do not press the back button while taking this task.</strong>
       <br/>
       <br/>
-      <div className="row">
+      <div className="row g-0">
         <div className="col justify-content-left align-self-left">
                 <form onSubmit={onSubmitFunc}>
                     <div className="form-group form-check">
-		      <div className="row">
+		      <div className="row g-0">
 			<div className="col d-flex justify-content-left">
 			  <Link href="/tasks/1">
 			    <button type="button" className="btn btn-outline-primary btn-lg">Continue to task</button>

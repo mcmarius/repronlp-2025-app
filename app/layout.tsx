@@ -1,8 +1,11 @@
 import './globals.css'
-import './css/bootstrap.min-5_3_0.css'
-import './css/bootstrap-icons-1.11.3.css'
-import './css/litw-styles-2.0.0.css'
 import { Inter } from 'next/font/google'
+
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import './css/litw-styles-2.0.0.css'
+
+import ImportBsJS from "@/components/import-bs-js"
 
 export const metadata = {
   title: 'ReproNLP – Evaluation of computer-generated scientific definitions',
@@ -22,6 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <ImportBsJS />
       <body className={inter.variable}>{children}</body>
     </html>
   )

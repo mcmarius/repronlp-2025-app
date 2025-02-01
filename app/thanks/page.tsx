@@ -15,11 +15,11 @@ export default function Home() {
     <Header sessionObj={session}/>
     </Suspense>
     <div id="thanks-box" className="instructions-stim-container">
-    <div className="row">
+    <div className="row g-0">
       <div className="col d-flex justify-content-center">
         <h2>Thank you for taking part in this study!</h2>
       </div>
-    <div className="row">
+    <div className="row g-0">
       <div className="col d-flex justify-content-center">
       </div>
     </div>
