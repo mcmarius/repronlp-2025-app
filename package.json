@@ -1,8 +1,8 @@
 {
-  "name": "vercel-kv-redis-starter",
-  "repository": "https://github.com/vercel/examples.git",
+  "name": "repronlp-2025-app",
+  "repository": "https://github.com/mcmarius/repronlp-2025-app.git",
   "license": "MIT",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "packageManager": "pnpm@10.1.0",
   "dependencies": {
     "@auth/upstash-redis-adapter": "^2.7.4",
     "@popperjs/core": "^2.11.8",
