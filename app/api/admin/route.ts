@@ -35,6 +35,7 @@ export const GET = auth(async function GET(req) {
   else if(command === "get_consent") {
       db_response = await redis.hgetall(`USER_CONSENTS`)
   }
+  // console.log(`[DEBUG] get admin ${JSON.stringify(db_response)}`)
   return NextResponse.json({ data: db_response }, { status: 200 })
 }) as any;
 

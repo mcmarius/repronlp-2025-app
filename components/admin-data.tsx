@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import Form from 'next/form'
 //import { useRouter } from 'next/navigation'
-import { FormEvent } from 'react'
+import { FormEvent, Suspense } from 'react'
 import { useState, useEffect } from 'react'
 import AdminCreateUser from '@/components/admin-create-user'
-import AdminDeleteUser from '@/components/admin-delete-user'
+//import AdminDeleteUser from '@/components/admin-delete-user'
+import AdminUserList from '@/components/admin-user-list'
 import AdminExportResponses from '@/components/admin-export-responses'
 import { auth } from "@/auth"
 import { cookies } from 'next/headers'
@@ -18,31 +19,31 @@ interface CsrfType extends Request {
 export default async function AdminData() {
 //    const router = useRouter()
     const cookieStore = await cookies()
-    const token = cookieStore.get('authjs.session-token')
     const aa = await auth()
     //console.log(`admin data tok ${token.value}: ${JSON.stringify(aa)}`)
     const csrfPrefix = process.env.VERCEL ? '__Host-' : ''
     const cookiePrefix = process.env.VERCEL ? '__Secure-' : ''
+    const csrf0 = cookieStore.get(`${csrfPrefix}authjs.csrf-token`)
+    const token = cookieStore.get(`${cookiePrefix}authjs.session-token`)
     const baseURL = process.env.VERCEL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'
     const baseURLencoded = encodeURIComponent(baseURL)
-    const getUsersParams = new URLSearchParams({command: "get_users"}).toString()
-    const csrf: CsrfType = await fetch(`${baseURL}/api/auth/csrf`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': `${cookiePrefix}authjs.session-token=${token?.value}` },
-    }) as unknown as CsrfType
-    const newCookie = `${csrfPrefix}authjs.csrf-token=${csrf.csrfToken}; ${cookiePrefix}authjs.callback-url=${baseURLencoded}; ${cookiePrefix}authjs.session-token=${token?.value}`
-    
-    const usersData = await fetch(`${baseURL}/api/admin?${getUsersParams}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': newCookie },
-    })
-    let users
+    const csrf = encodeURIComponent(csrf0.value)
+    //const csrf: CsrfType = await fetch(`${baseURL}/api/auth/csrf`, {
+    //  method: 'GET',
+    //  headers: { 'Content-Type': 'application/json', 'Cookie': `${cookiePrefix}authjs.session-token=${token?.value}` },
+    //}) as unknown as CsrfType
+    const newCookie = `${csrfPrefix}authjs.csrf-token=${csrf}; ${cookiePrefix}authjs.callback-url=${baseURLencoded}; ${cookiePrefix}authjs.session-token=${token?.value}`
+    console.log(`new cookie: ${newCookie}`)
+    console.log(`new csrf: ${JSON.stringify(csrf)}`)
+    console.log(`new tok: ${token?.value}`)
+
+    /*let users
     if(!usersData.ok) {
         users = {data: {}}
     }
     else {
         users = await usersData.json()
-    }
+    }*/
     //console.log(`admin data: ${Object.entries(users.data)}`)
     //Object.entries(users.data).map((user) => (
     //    console.log(`-> ${user[0]} with ${user[1].displayName}`)
@@ -69,13 +70,9 @@ export default async function AdminData() {
   return (
     <div>
       <h4 className="ml-4">User list</h4>
-      <ul id="user-list" className="list-group col-4">
-        {Object.entries(users.data).map((user: any[]) => (
-          <li className="list-group-item" key={user[0]}>{user[1].displayName}, role: {user[1].role || 'user'}
-             <AdminDeleteUser baseURL={baseURL} cookie={newCookie} uid={user[0]}/>
-          </li>
-        ))}
-      </ul>
+        <Suspense>
+        <AdminUserList baseURL={baseURL} cookie={newCookie}/>
+        </Suspense>
       <div>
         <h5>Create/update user</h5>
         <AdminCreateUser baseURL={baseURL} cookie={newCookie}/>
