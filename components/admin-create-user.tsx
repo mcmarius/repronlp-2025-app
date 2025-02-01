@@ -5,16 +5,13 @@ import { FormEvent } from 'react'
 
 interface CreateUserProps {
   baseURL: string;
-  csrf: string;
-  token: string;
+  cookie: string;
 }
 
 export default function AdminCreateUser(props: CreateUserProps) {
     const router = useRouter()
     const baseURL = props.baseURL
-    const csrf = props.csrf
-    const token = props.token
-    const baseURLencoded = encodeURIComponent(baseURL)
+    const cookie = props.cookie
 
     const onSubmitCreateUser = async ( event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -25,7 +22,7 @@ export default function AdminCreateUser(props: CreateUserProps) {
       const createUserParams = new URLSearchParams({command: "create_user", uid: uid.value, pw: pw.value, role: role.value}).toString()
       await fetch(`${baseURL}/api/admin?${createUserParams}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Cookie': `authjs.csrf-token=${csrf}; authjs.callback-url=${baseURLencoded}; authjs.session-token=${token}` },
+        headers: { 'Content-Type': 'application/json', 'Cookie': cookie },
       })
       router.refresh()
     }

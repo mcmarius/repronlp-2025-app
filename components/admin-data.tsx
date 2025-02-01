@@ -21,17 +21,20 @@ export default async function AdminData() {
     const token = cookieStore.get('authjs.session-token')
     const aa = await auth()
     //console.log(`admin data tok ${token.value}: ${JSON.stringify(aa)}`)
-    const baseURL = process.env.VERCEL ? `httpsL//${process.env.VERCEL_URL}` : 'http://localhost:3000'
+    const csrfPrefix = process.env.VERCEL ? '__Host-' : ''
+    const cookiePrefix = process.env.VERCEL ? '__Secure-' : ''
+    const baseURL = process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
     const baseURLencoded = encodeURIComponent(baseURL)
     const getUsersParams = new URLSearchParams({command: "get_users"}).toString()
     const csrf: CsrfType = await fetch(`${baseURL}/api/auth/csrf`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': `authjs.session-token=${token?.value}` },
+      headers: { 'Content-Type': 'application/json', 'Cookie': `${cookiePrefix}authjs.session-token=${token?.value}` },
     }) as unknown as CsrfType
+    const newCookie = `${csrfPrefix}authjs.csrf-token=${csrf.csrfToken}; ${cookiePrefix}authjs.callback-url=${baseURLencoded}; ${cookiePrefix}authjs.session-token=${token?.value}`
     
     const usersData = await fetch(`${baseURL}/api/admin?${getUsersParams}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': `authjs.csrf-token=${csrf.csrfToken}; authjs.callback-url=${baseURLencoded}; authjs.session-token=${token?.value}` },
+      headers: { 'Content-Type': 'application/json', 'Cookie': newCookie },
     })
     let users
     if(!usersData.ok) {
@@ -47,7 +50,7 @@ export default async function AdminData() {
     const getResponsesParams = new URLSearchParams({command: "get_responses"}).toString()
     const responsesData = await fetch(`${baseURL}/api/admin?${getResponsesParams}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': `authjs.csrf-token=${csrf.csrfToken}; authjs.callback-url=${baseURLencoded}; authjs.session-token=${token?.value}` },
+      headers: { 'Content-Type': 'application/json', 'Cookie': newCookie },
     })
     let responses
     if(!responsesData.ok) {
@@ -69,13 +72,13 @@ export default async function AdminData() {
       <ul id="user-list" className="list-group col-4">
         {Object.entries(users.data).map((user: any[]) => (
           <li className="list-group-item" key={user[0]}>{user[1].displayName}, role: {user[1].role || 'user'}
-             <AdminDeleteUser baseURL={baseURL} csrf={csrf.csrfToken} token={token?.value || ''} uid={user[0]}/>
+             <AdminDeleteUser baseURL={baseURL} cookie={newCookie} uid={user[0]}/>
           </li>
         ))}
       </ul>
       <div>
         <h5>Create/update user</h5>
-        <AdminCreateUser baseURL={baseURL} csrf={csrf.csrfToken} token={token?.value || ''}/>
+        <AdminCreateUser baseURL={baseURL} cookie={newCookie}/>
       </div>
 
       <AdminExportResponses responses={JSON.stringify(responses.data)}/>
