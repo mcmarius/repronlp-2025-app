@@ -46,9 +46,10 @@ export const POST = auth(async function POST(req) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 })
   const query = req.nextUrl.searchParams
   const command = query.get('command')
-  const uid = query.get('uid')
-  const pw = query.get('pw')
-  const role = query.get('role')
+  const body = await req.json()
+  const uid = body.uid
+  const pw = body.pw
+  const role = body.role
   console.log(`[DEBUG] post admin ${command}`)
 
   let db_response = null

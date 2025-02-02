@@ -3,15 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 
-interface CreateUserProps {
-  baseURL: string;
-  cookie: string;
-}
-
-export default function AdminCreateUser(props: CreateUserProps) {
+export default function AdminCreateUser() {
     const router = useRouter()
-    const baseURL = props.baseURL
-    const cookie = props.cookie
 
     const onSubmitCreateUser = async ( event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -19,10 +12,12 @@ export default function AdminCreateUser(props: CreateUserProps) {
       const uid = form.querySelector('input[name="uid"]') as HTMLInputElement;
       const pw = form.querySelector('input[name="pw"]') as HTMLInputElement;
       const role = form.querySelector('input[name="role"]') as HTMLInputElement;
-      const createUserParams = new URLSearchParams({command: "create_user", uid: uid.value, pw: pw.value, role: role.value}).toString()
-      await fetch(`${baseURL}/api/admin?${createUserParams}`, {
+      const createUserParams = {uid: uid.value, pw: pw.value, role: role.value}
+      const commandParams = new URLSearchParams({command: "create_user"}).toString()
+      await fetch(`/api/admin?${commandParams}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Cookie': cookie },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(createUserParams)
       })
       router.refresh()
     }

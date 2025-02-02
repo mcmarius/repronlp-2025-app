@@ -4,25 +4,21 @@ import { useRouter } from 'next/navigation'
 import { MouseEvent } from 'react'
 
 interface DeleteUserProps {
-  baseURL: string;
-  cookie: string;
   uid: string;
   disabled: boolean;
 }
 
 export default function AdminDeleteUser(props: DeleteUserProps) {
     const router = useRouter()
-    const baseURL = props.baseURL
-    const cookie = props.cookie
     const uid = props.uid
     const disabled = props.disabled
 
     const deleteUser = async ( e: MouseEvent) => {
       // e.preventDefault();
       const deleteUserParams = new URLSearchParams({command: "delete_user", uid: uid}).toString()
-      await fetch(`${baseURL}/api/admin?${deleteUserParams}`, {
+      await fetch(`/api/admin?${deleteUserParams}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', 'Cookie': cookie },
+        headers: { 'Content-Type': 'application/json' },
       })
       let parent = document.getElementById('user-list');
       if (parent) {

@@ -4,10 +4,12 @@ import { FormEvent, MouseEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface TaskFormProps {
-  uid: string,
+  uid: string;
   id: string;
   term: string;
   definition: string;
+  q1: string;
+  q2: string;
 }
 
 const TaskForm = (props: TaskFormProps) => {
@@ -15,6 +17,8 @@ const TaskForm = (props: TaskFormProps) => {
   const [currentId, setCurrentId] = useState(parseInt(props.id));
   const [answers, setAnswers] = useState({});
 
+  const q1 = props.q1
+  const q2 = props.q2
   let [currentQuestion, setCurrentQuestion] = useState({
     id: props.id,
     term: props.term,
@@ -34,7 +38,7 @@ const TaskForm = (props: TaskFormProps) => {
         { id: 'likert3', value: 3 },
         { id: 'likert4', value: 4 },
     ],
-    likertDisable: false
+    likertDisable: q1 == "No"
   });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -45,10 +49,10 @@ const TaskForm = (props: TaskFormProps) => {
     const answer = Array.from(answerItems).find((e) => e.checked)?.value || '';
     const answer2 = Array.from(answer2Items).find((e) => e.checked)?.value || '';
     // console.log(`task: q1 ${answer} q2 ${answer2}`)
-    fetch('/api/task', {
+    fetch(`/api/tasks/${currentId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({uid: props.uid, qid: currentId, data: {q1: answer, q2: answer2 }}),
+      body: JSON.stringify({q1: answer, q2: answer2 }),
     });
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
@@ -119,6 +123,7 @@ const TaskForm = (props: TaskFormProps) => {
                       id={option.id}
                       name="answer"
                       value={option.value}
+                      defaultChecked={q1 == option.value}
                     />
                     <label className="ml-4" htmlFor={option.id}>{option.value}</label>
                   </div>
@@ -137,6 +142,7 @@ const TaskForm = (props: TaskFormProps) => {
                       id={option.id}
                       name="answer2"
                       value={option.value}
+                      defaultChecked={String(q2) == String(option.value)}
                     />
                     
                     <label className="ml-2" htmlFor={option.id}>{option.value}</label>

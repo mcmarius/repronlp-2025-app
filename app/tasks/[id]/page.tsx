@@ -1,4 +1,4 @@
-import { auth } from "@/auth"
+import { auth, API } from "@/auth"
 
 import definitions from "@/app/definitions.json"
 import terms from "@/app/terms.json"
@@ -25,10 +25,15 @@ export default async function Page({params,}: {params: Promise<{ id: string }>})
   //console.log(definitions[0])
   const term = terms.find((q: Query) => q.id == definitions[id - 1]['term_id'])
   //console.log(term)
+  const existing = await API(`/api/tasks/${id}`, 'GET')
+  const q1 = existing.message.q1
+  const q2 = existing.message.q2
+  // console.log(`got q1 ${q1} and q2 ${q2}`)
   return (
     <div id="content">
       <Header sessionObj={sessionObj}/>
-      <TaskForm uid={session?.user.name || 'unknown_user'} id={idStr} term={term?.term_text || ''} definition={definitions[id - 1].def_text}/>
+      <TaskForm uid={session?.user.name || 'unknown_user'}
+        id={idStr} term={term?.term_text || ''} definition={definitions[id - 1].def_text} q1={q1} q2={q2} />
     </div>
     )
 }

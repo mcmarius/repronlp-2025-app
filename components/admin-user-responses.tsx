@@ -1,30 +1,12 @@
 
 import { MouseEvent } from 'react'
 
+import { API } from '@/auth'
 import AdminExportResponses from '@/components/admin-export-responses'
 
-interface UserResponsesProps {
-  baseURL: string;
-  cookie: string;
-}
-
-export default async function AdminUserResponses(props: UserResponsesProps) {
-    const baseURL = props.baseURL
-    const cookie = props.cookie
-    const getResponsesParams = new URLSearchParams({command: "get_responses"}).toString()
-    const responsesData = await fetch(`${baseURL}/api/admin?${getResponsesParams}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Cookie': cookie },
-      cache: 'force-cache',
-      next: { tags: ['user-responses-tag'], revalidate: 3600 },
-    })
-    let responses
-    if(!responsesData.ok) {
-        responses = {data: {}}
-    }
-    else {
-        responses = await responsesData.json()
-    }
+export default async function AdminUserResponses() {
+    const getResponsesParams = {command: "get_responses"}
+    const responses = await API('/api/admin', 'GET', getResponsesParams)
     //console.log(`admin data: ${Object.entries(responses.data)}`)
     //Object.entries(responses.data).map((response) => (
     //    console.log(`-> ${response[0]} with ${response[1].q1}`)

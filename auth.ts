@@ -1,6 +1,6 @@
 import NextAuth, { type DefaultSession, type User } from "next-auth"
-
 import Credentials from "next-auth/providers/credentials"
+import { cookies } from 'next/headers'
 
 //import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter"
 import { Redis } from "@upstash/redis"
@@ -108,3 +108,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
 })
+
+export async function API(path: string, method: string, params?: Record<string, string>, body?: BodyInit) {
+    const cookieStore = await cookies()
+    const session = await auth()
+    // console.log(`admin data auth ${JSON.stringify(session)}`)
+    const user = session?.user.name || 'unknown_user'
+    const csrfPrefix = process.env.VERCEL ? '__Host-' : ''
+    const cookiePrefix = process.env.VERCEL ? '__Secure-' : ''
+    const csrf0 = cookieStore.get(`${csrfPrefix}authjs.csrf-token`) || {value: ''}
+    const token = cookieStore.get(`${cookiePrefix}authjs.session-token`)
+    const baseURL = process.env.VERCEL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'
+    const baseURLencoded = encodeURIComponent(baseURL)
+    const csrf = encodeURIComponent(csrf0?.value)
+    const newCookie = `${csrfPrefix}authjs.csrf-token=${csrf}; ${cookiePrefix}authjs.callback-url=${baseURLencoded}; ${cookiePrefix}authjs.session-token=${token?.value}`
+    let queryParams = ''
+    if(params)
+      queryParams = '?' + new URLSearchParams(params).toString()
+    const response = await fetch(`${baseURL}${path}${queryParams}`, {
+        method: method,
+        headers: { 'Content-Type': 'application/json', 'Cookie': newCookie },
+        body: body
+    })
+    const result = await response.json()
+    // console.log(`[DEBUG] response from API: ${JSON.stringify(result)}`)
+    return result
+}
