@@ -48,12 +48,17 @@ const TaskForm = (props: TaskFormProps) => {
     const answer2Items = form.querySelectorAll('input[name="answer2"]') as NodeListOf<HTMLInputElement>;
     const answer = Array.from(answerItems).find((e) => e.checked)?.value || '';
     const answer2 = Array.from(answer2Items).find((e) => e.checked)?.value || '';
-    // console.log(`task: q1 ${answer} q2 ${answer2}`)
-    fetch(`/api/tasks/${currentId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({q1: answer, q2: answer2 }),
-    });
+    // console.log(`task: q1 ${answer} q2 ${answer2} and old q1 ${q1} q2 ${q2}`)
+    if(q1 != "" && q1 == answer && q2 == answer2) {
+      // console.log("[DEBUG] No change in answers")
+    }
+    else {
+      fetch(`/api/tasks/${currentId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({q1: answer, q2: answer2 }),
+      });
+    }
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
     if(currentId == 300)
