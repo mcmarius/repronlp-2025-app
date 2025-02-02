@@ -8,13 +8,13 @@ const redis = new Redis({
   token: process.env.KV_REST_API_TOKEN,
 })
 
-export const POST = auth(async function POST(req, params: any) {
+export const POST = auth(async function POST(req, { params }) {
   if(!req.auth)
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
 
   const body = await req.json()
   const uid = req.auth.user.name
-  const qid = (await params).qid
+  const qid = (await params || {}).qid
   // const qid = body.qid
   let qdata = body
   // console.log(`${qdata.q1}`)
@@ -39,13 +39,13 @@ interface DBResponse {
   ts: string
 }
 
-export const GET = auth(async function GET(req, params: any) {
+export const GET = auth(async function GET(req, { params }) {
   if(!req.auth)
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
 
   const query = req.nextUrl.searchParams
   const uid = req.auth.user.name
-  const qid = (await params).qid
+  const qid = (await params || {}).qid
   const now = new Date();
   console.log(`[INFO][${now.toISOString()}] make redis hget query with key ${uid}#${qid}`)
   const dbResponse = await redis.hget(`RESPONSES`, `${uid}#${qid}`) as DBResponse
