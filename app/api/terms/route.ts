@@ -12,15 +12,24 @@ export const POST = auth(async function POST(req) {
   if(!req.auth)
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
 
-  const body = await req.json()
-  const uid = body.uid
+  const uid = req.auth.user.name || 'unknown_user'
   // console.log(`terms got uid ${uid} w/ req auth: ${JSON.stringify(req.auth)}`)
-  if(req.auth.user.name !== uid) {
-      return NextResponse.json({ message: "Forbidden" }, { status: 403 })
-  }
   const now = new Date();
   console.log(`[INFO][${now.toISOString()}] make redis consent query with key ${uid} and value yes`)
   await redis.hset(`USER_CONSENTS`, {[uid]: {consent: 'yes', ts: now}})
 
   return NextResponse.json({ message: 'Form submitted successfully' }, {status: 201})
+}) as any;
+
+export const GET = auth(async function GET(req) {
+  if(!req.auth)
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+
+  const uid = req.auth.user.name || 'unknown_user'
+  // console.log(`terms got uid ${uid} w/ req auth: ${JSON.stringify(req.auth)}`)
+  const now = new Date();
+  console.log(`[INFO][${now.toISOString()}] make redis consent hget query with key ${uid}`)
+  const response = await redis.hget(`USER_CONSENTS`, uid) || ''
+
+  return NextResponse.json({ message: response }, {status: 200})
 }) as any;

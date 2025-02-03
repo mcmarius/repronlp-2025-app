@@ -12,7 +12,7 @@ export default function Home() {
     <div id="content">
       <Suspense>
         <Header sessionObj={session}/>
-        <InformedConsent sessionObj={session}/>
+        <InformedConsent />
       </Suspense>
     </div>
     )

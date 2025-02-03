@@ -1,12 +1,10 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { FormEvent, use } from 'react'
+import { FormEvent } from 'react'
 
-export default function InformedConsent({sessionObj}:{sessionObj: Promise<any>}) {
-    const session = use(sessionObj)
+export default function InformedConsent() {
     const router = useRouter()
-    const uid = session?.user.name || 'unknown_user'
 
     const onSubmitFunc = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -14,7 +12,6 @@ export default function InformedConsent({sessionObj}:{sessionObj: Promise<any>})
       fetch('/api/terms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({uid: uid}),
       });
       
       router.push("/instructions")
