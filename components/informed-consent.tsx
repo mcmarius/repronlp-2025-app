@@ -31,10 +31,10 @@ export default function InformedConsent() {
         <div className="row g-0">
           <div className="col d-flex justify-content-center align-self-center">
             <form onSubmit={onSubmitFunc}>
-              <div className="form-group form-check">
-                <input type="checkbox" className="form-check-input" name="acceptTerms" id="acceptTerms" onChange={toggleButton} />
+              <div className="form-group required form-check">
+                <input required type="checkbox" className="form-check-input" name="acceptTerms" id="acceptTerms" onChange={toggleButton} />
                 <label htmlFor="acceptTerms" className="form-check-label">
-                    I have received and signed a consent form for this study and
+                    <span style={{color: 'red'}}>*</span> I have received and signed a consent form for this study and
                     I agree to take part in the project<br/>
                     &quot;ReproHum – Evaluation of computer-generated scientific definitions&quot;</label>
               </div>

@@ -69,10 +69,12 @@ const TaskForm = (props: TaskFormProps) => {
   const handleQ1Click = (event: MouseEvent) => {
     // event.preventDefault();
     const target = event.target as HTMLElement;
-    if(target.id == 'no-opt')
+    if(target.id == 'no-opt') {
       setCurrentQuestion({ ...currentQuestion, likertDisable: true });
-    else
+    }
+    else {
       setCurrentQuestion({ ...currentQuestion, likertDisable: false });
+    }
   };
 
   //console.log(currentQuestion)
@@ -118,7 +120,7 @@ const TaskForm = (props: TaskFormProps) => {
                 <div className="p-2 mb-2"><strong>Definition:</strong> {currentQuestion.definition}</div>
               </div>
               <div>
-                <p>Does this definition contain factually incorrect information?</p>
+                <p><span style={{color: 'red'}}>*</span> Does this definition contain factually incorrect information?</p>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 {currentQuestion.options.map((option) => (
@@ -136,7 +138,7 @@ const TaskForm = (props: TaskFormProps) => {
               </div>
               <br/>
               <div>
-                <p>If the definition contains factually incorrect information, how extensive are these errors?</p>
+                <p><span style={{color: 'red', display: currentQuestion.likertDisable ? 'none' : 'inline'}}>*</span> If the definition contains factually incorrect information, how extensive are these errors?</p>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 {currentQuestion.likertOptions.map((option) => (

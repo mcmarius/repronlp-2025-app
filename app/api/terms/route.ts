@@ -21,6 +21,7 @@ export const POST = auth(async function POST(req) {
   return NextResponse.json({ message: 'Form submitted successfully' }, {status: 201})
 }) as any;
 
+// this endpoint is not really needed
 export const GET = auth(async function GET(req) {
   if(!req.auth)
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
