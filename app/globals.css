@@ -37,3 +37,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@media only screen and (max-width: 1300px) {
+  #title {
+    display: none
+  }
+}

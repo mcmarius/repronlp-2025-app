@@ -25,7 +25,7 @@ export default function InformedConsent() {
       <div id="consent-box" className="instructions-stim-container">
         <div className="row g-0">
           <div className="col d-flex justify-content-center">
-            <h2 className="bolded-blue">ReproNLP Definitions Accuracy: Informed consent</h2>
+            <h2 className="bolded-blue">Informed consent</h2>
           </div>
         </div>
         <div className="row g-0">

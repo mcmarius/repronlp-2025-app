@@ -13,17 +13,14 @@ export default function Header({sessionObj}:{sessionObj: Promise<any>}) {
   return (
     <div id="header">
       <div className="row position-relative g-0">
-        <Link href="/" className="col-1 ml-4 z-3">
-          <Image src='/img/LITW-logo2020.png' id='logo'
-                   alt='The Lab in the Wild logo showing an Earth globe and the name of the site in green colors.'
-                   width={220} height={70}
-          />
+        <Link href="/" className="col-1 ml-4 mt-3 z-3">
+          <h2>Home</h2>
         </Link>
-        <div className="position-absolute text-center mt-4"><p className="fs-2"><a href="https://labinthewild.org/">Lab in the Wild</a> clone for HumEval</p></div>
+        <div id="title" className="position-absolute text-center mt-4"><p className="fs-2">ReproHum – Evaluation of computer-generated scientific definitions</p></div>
         <div className="col">
-          <div className="dropdown dropdown-end position-absolute end-10 z-2 mt-3">
+          <div className="dropdown dropdown-end position-absolute end-5 z-2 mt-3">
             <button type="button" className="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-              Logged in as<br/>{user}
+              Logged in as {user}
             </button>
             <ul className="dropdown-menu dropdown-menu-end">
               <li>

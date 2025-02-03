@@ -18,7 +18,7 @@ const TaskForm = (props: TaskFormProps) => {
   const [answers, setAnswers] = useState({});
 
   const q1 = props.q1
-  const q2 = props.q2
+  let [q2, setQ2] = useState(props.q2);
   let [currentQuestion, setCurrentQuestion] = useState({
     id: props.id,
     term: props.term,
@@ -71,11 +71,26 @@ const TaskForm = (props: TaskFormProps) => {
     const target = event.target as HTMLElement;
     if(target.id == 'no-opt') {
       setCurrentQuestion({ ...currentQuestion, likertDisable: true });
+      let answer2Checked = document.querySelector('input[name="answer2"]:checked') as HTMLInputElement
+      if (answer2Checked) {
+        answer2Checked.checked = false;
+      }
     }
     else {
       setCurrentQuestion({ ...currentQuestion, likertDisable: false });
+      let answer2Items = document.querySelectorAll('input[name="answer2"]') as NodeListOf<HTMLInputElement>;
+      // restore db or previous answer
+      let prevAnswer = Array.from(answer2Items).find((e) => e.value == q2);
+      if (prevAnswer) {
+        prevAnswer.checked = true
+      }
     }
   };
+  const handleQ2Click = (event: MouseEvent) => {
+    const target = event.target as HTMLInputElement;
+    // update to remember choice
+    setQ2(target.value)
+  }
 
   //console.log(currentQuestion)
   //console.log(props)
@@ -137,13 +152,13 @@ const TaskForm = (props: TaskFormProps) => {
                 ))}
               </div>
               <br/>
-              <div>
+              <div style={{color: currentQuestion.likertDisable ? 'grey' : 'black'}}>
                 <p><span style={{color: 'red', display: currentQuestion.likertDisable ? 'none' : 'inline'}}>*</span> If the definition contains factually incorrect information, how extensive are these errors?</p>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 {currentQuestion.likertOptions.map((option) => (
                   <div key={option.value} className="col-1 ml-2 mr-2">
-                    <input disabled={currentQuestion.likertDisable}
+                    <input disabled={currentQuestion.likertDisable} onClick={handleQ2Click}
                       required={!currentQuestion.likertDisable}
                       type="radio"
                       id={option.id}
