@@ -48,7 +48,7 @@ export default function AdminUserResponses() {
         <h4 className="ml-4">Responses</h4>
         <button className="btn btn-outline-primary" onClick={onFetchClick}>Fetch responses
         </button>
-        {Object.entries(responses).length > 0 &&  <AdminExportItems items={JSON.stringify(responses)} name='responses'/>}
+        {Object.entries(responses).length > 0 &&  <AdminExportItems items={JSON.stringify(responses)} text='responses' name='responses' />}
         {Object.entries(responses).length > 0 && <Responses responses={responses} />}
       </main>
     )

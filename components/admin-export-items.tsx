@@ -5,6 +5,7 @@ import { MouseEvent } from 'react'
 interface ExportItemsProps {
   items: string,
   name: string,
+  text: string
 }
 
 export default function AdminExportItems(props: ExportItemsProps) {
@@ -41,7 +42,7 @@ export default function AdminExportItems(props: ExportItemsProps) {
   }
   return (
     <div>
-      <button className="btn btn-outline-primary" onClick={handleDownload}>Export {props.name}</button>
+      <button className="btn btn-outline-primary" onClick={handleDownload}>Export {props.text}</button>
     </div>
   )
 }

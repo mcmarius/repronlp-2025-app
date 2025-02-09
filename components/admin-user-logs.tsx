@@ -7,13 +7,16 @@ import AdminExportItems from '@/components/admin-export-items'
 
 export default function AdminUserLogs() {
     const [logs, setLogs] = useState({})
+    let [uid, setUid] = useState("")
 
     const onFetchClick = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       const form = event.target as HTMLFormElement;
-      const uid = form.querySelector('input[name="log-uid"]') as HTMLInputElement;
+      const uidForm = form.querySelector('input[name="log-uid"]') as HTMLInputElement;
+      setUid(uidForm.value)
+      uid = uidForm.value
       // console.log(`got uid ${uid.value}, len: ${Object.entries(logs).length}`)
-      const getLogsParams = {command: "get_logs", uid: uid.value}
+      const getLogsParams = {command: "get_logs", uid: uid}
       AdminAPI(setLogs, getLogsParams, 'GET')
 
       // remove previous export button
@@ -39,7 +42,7 @@ export default function AdminUserLogs() {
           <button className="btn btn-outline-primary" >Fetch logs
           </button>
         </form>
-        {Object.entries(logs).length > 0 &&  <AdminExportItems items={JSON.stringify(logs)} name='logs' />}
+        {Object.entries(logs).length > 0 &&  <AdminExportItems items={JSON.stringify(logs)} text='logs' name={`logs-${uid}`} />}
       </div>
     )
 }
