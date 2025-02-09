@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { auth } from "@/auth"
 import AdminCreateUser from '@/components/admin-create-user'
 import AdminUserList from '@/components/admin-user-list'
+import AdminUserLogs from '@/components/admin-user-logs'
 import AdminUserResponses from '@/components/admin-user-responses'
 
 export default async function AdminData() {
@@ -12,17 +13,18 @@ export default async function AdminData() {
 
   return (
     <div>
-      <h4 className="ml-4">User list</h4>
-        <Suspense>
-        <AdminUserList user={user} />
-        </Suspense>
+      <AdminUserList user={user} />
+      <hr/>
       <div>
         <h5>Create/update user</h5>
         <AdminCreateUser />
       </div>
+      <hr/>
 
       {/*credits to https://github.com/dhiazfathra/nextjs-binary-file-download/blob/master/app/page.tsx */}
 
+      <AdminUserLogs />
+      <hr/>
       <AdminUserResponses />
     </div>
   )

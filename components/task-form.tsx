@@ -17,8 +17,11 @@ const TaskForm = (props: TaskFormProps) => {
   const [currentId, setCurrentId] = useState(parseInt(props.id));
   const [answers, setAnswers] = useState({});
 
-  const q1 = props.q1
+  const initQ1 = props.q1
+  const initQ2 = props.q2
+  const [q1, setQ1] = useState(props.q1)
   let [q2, setQ2] = useState(props.q2);
+  // console.log(`task: > old q1 ${initQ1} q2 ${initQ2}`)
   let [currentQuestion, setCurrentQuestion] = useState({
     id: props.id,
     term: props.term,
@@ -49,7 +52,7 @@ const TaskForm = (props: TaskFormProps) => {
     const answer = Array.from(answerItems).find((e) => e.checked)?.value || '';
     const answer2 = Array.from(answer2Items).find((e) => e.checked)?.value || '';
     // console.log(`task: q1 ${answer} q2 ${answer2} and old q1 ${q1} q2 ${q2}`)
-    if(q1 != "" && q1 == answer && q2 == answer2) {
+    if(q1 != "" && initQ1 == answer && initQ2 == answer2) {
       // console.log("[DEBUG] No change in answers")
     }
     else {
@@ -63,8 +66,9 @@ const TaskForm = (props: TaskFormProps) => {
     setCurrentId(currentId + 1);
     if(currentId == 300)
         router.push('/thanks')
-    else
+    else {
         router.push(`/tasks/${currentId + 1}`);
+    }
   };
   const handleQ1Click = (event: MouseEvent) => {
     // event.preventDefault();

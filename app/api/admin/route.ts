@@ -32,6 +32,9 @@ export const GET = auth(async function GET(req) {
   else if(command === "get_responses") {
       db_response = await redis.hgetall(`RESPONSES`)
   }
+  else if(command === "get_logs" && uid) {
+      db_response = await redis.lrange(`LOGS-${uid}`, 0, -1)
+  }
   else if(command === "get_consent") {
       db_response = await redis.hgetall(`USER_CONSENTS`)
   }
@@ -72,6 +75,7 @@ export const DELETE = auth(async function DELETE(req) {
 
   let db_response = null
   if(command === "delete_user" && uid) {
+      await redis.ltrim(`LOGS-${uid}`, 9999, 0)
       await redis.hdel('PROFILES', uid)
       await redis.del(`USERS#${uid}`)
       db_response = 'deleted user'

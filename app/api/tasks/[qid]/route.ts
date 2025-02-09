@@ -29,8 +29,10 @@ export const POST = auth(async function POST(req, { params }) {
   qdata.ts = now
   console.log(`[INFO][${now.toISOString()}] make redis query with key ${uid}#${qid} and value ${JSON.stringify(qdata)}`)
   await redis.hset(`RESPONSES`, {[`${uid}#${qid}`]: qdata})
+  qdata.qid = qid
+  await redis.lpush(`LOGS-${uid}`, JSON.stringify(qdata))
 
-  return NextResponse.json({ message: 'Form submitted successfully' }, {status: 201})
+  return NextResponse.json({ message: 'Response saved' }, {status: 201})
 }) as any;
 
 interface DBResponse {
