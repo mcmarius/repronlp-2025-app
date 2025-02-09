@@ -32,7 +32,7 @@ export default function AdminExportItems(props: ExportItemsProps) {
     const a = document.createElement("a");
     a.href = url;
     a.id = buttonId
-    a.text = "Download"
+    a.text = `Download ${props.name}`
     a.className = "btn btn-outline-primary"
     a.download = fileName;
     let parent = (e.target as HTMLElement ).parentNode as HTMLElement;
