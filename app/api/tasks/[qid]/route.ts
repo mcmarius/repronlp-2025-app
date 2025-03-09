@@ -3,6 +3,9 @@ import { Redis } from '@upstash/redis'
 
 import { auth } from "@/auth"
 
+import definitions from "@/app/definitions.json"
+import terms from "@/app/terms_by_category.json"
+
 const redis = new Redis({
   url: process.env.KV_REST_API_URL,
   token: process.env.KV_REST_API_TOKEN,
@@ -14,7 +17,20 @@ export const POST = auth(async function POST(req, { params }) {
 
   const body = await req.json()
   const uid = req.auth.user.name
-  const qid = (await params || {}).qid
+  const role = req.auth.user.role || ''
+  let qid = String((await params || {}).qid)
+  if (role.startsWith("user-")) {
+    console.log(`role qid: ${qid}`)
+    // we need to find the original question id
+    let roleTerms = terms.filter((term) => term.domain == role.split("user-")[1])
+    if(roleTerms.length == 0) {
+      roleTerms = terms
+    }
+    const termIds = roleTerms.map((term) => term.id)
+    const roleDefinitions = definitions.filter((definition) => termIds.includes(definition['term_id']))
+    qid = String(definitions.indexOf(roleDefinitions[parseInt(qid) - 1]))
+    console.log(`original qid: ${qid}`)
+  }
   // const qid = body.qid
   let qdata = body
   // console.log(`${qdata.q1}`)
@@ -47,7 +63,20 @@ export const GET = auth(async function GET(req, { params }) {
 
   const query = req.nextUrl.searchParams
   const uid = req.auth.user.name
-  const qid = (await params || {}).qid
+  const role = req.auth.user.role || ''
+  let qid = String((await params || {}).qid)
+  if (role.startsWith("user-")) {
+    console.log(`role qid: ${qid}`)
+    // we need to find the original question id
+    let roleTerms = terms.filter((term) => term.domain == role.split("user-")[1])
+    if(roleTerms.length == 0) {
+      roleTerms = terms
+    }
+    const termIds = roleTerms.map((term) => term.id)
+    const roleDefinitions = definitions.filter((definition) => termIds.includes(definition['term_id']))
+    qid = String(definitions.indexOf(roleDefinitions[parseInt(qid) - 1]))
+    console.log(`original qid: ${qid}`)
+  }
   const now = new Date();
   console.log(`[INFO][${now.toISOString()}] make redis hget query with key ${uid}#${qid}`)
   const dbResponse = await redis.hget(`RESPONSES`, `${uid}#${qid}`) as DBResponse

@@ -10,6 +10,7 @@ interface TaskFormProps {
   definition: string;
   q1: string;
   q2: string;
+  total: number;
 }
 
 const TaskForm = (props: TaskFormProps) => {
@@ -64,7 +65,7 @@ const TaskForm = (props: TaskFormProps) => {
     }
     setAnswers((prevAnswers) => ({ ...prevAnswers, [currentId]: [answer, answer2] }));
     setCurrentId(currentId + 1);
-    if(currentId == 300)
+    if(currentId == props.total)
         router.push('/thanks')
     else {
         router.push(`/tasks/${currentId + 1}`);
@@ -122,7 +123,7 @@ const TaskForm = (props: TaskFormProps) => {
       <div className="row container d-flex">
         <form id="task-form" onSubmit={handleSubmit}>
           <div className="col d-flex justify-content-left">
-            <h6>You are currently on section {props.id} / 300</h6><br/>
+            <h6>You are currently on section {props.id} / {props.total}</h6><br/>
             <div className="mt-4 p-2"></div> <br/>
           </div>
           {currentQuestion && (
