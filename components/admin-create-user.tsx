@@ -47,7 +47,7 @@ export default function AdminCreateUser() {
           <input id="add-user-role" className="form-control" name="role" defaultValue="user" type="text"/>
             </div>
           </div>
-          <button type="submit" id="add-user-button" className="btn btn-outline-primary btn">Add user</button>
+          <button type="submit" id="add-user-button" className="btn btn-outline-primary btn">Add/update user</button>
         </form>
     )
 }
