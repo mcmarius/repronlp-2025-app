@@ -2,7 +2,11 @@
 
 import Link from 'next/link'
 
-export default function Instructions() {
+interface InstructionProps {
+  total: number
+}
+
+export default function Instructions(props: InstructionProps) {
     function onSubmitFunc() {
       console.log('accepted terms')
     }
@@ -16,7 +20,7 @@ export default function Instructions() {
         </div>
         <div className="row g-0">
           <div className="col-20 text-wrap justify-content-left align-self-left">
-          <p>You will be given 300 terms with their definitions and asked to rate the factual truth of the definitions.</p>
+          <p>You will be given {props.total} terms with their definitions and asked to rate the factual truth of the definitions.</p>
           <p>You will first be asked whether the definitions contain any factual inaccuracies (yes or no) and then, if yes, you will be asked to rate the severity of the inaccuracies on a scale from <strong>1 (lowest)</strong> to <strong>4 (highest)</strong></p>
           <p>When you do not know whether a definition is factually inaccurate, please use an internet search to check.</p>
           </div>
