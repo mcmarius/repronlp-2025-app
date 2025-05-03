@@ -24,11 +24,11 @@ export const POST = auth(async function POST(req, { params }) {
     // we need to find the original question id
     let roleTerms = terms.filter((term) => term.domain == role.split("user-")[1])
     if(roleTerms.length == 0) {
-      roleTerms = terms
+      roleTerms = terms.filter((term) => term.domain != "demo")
     }
     const termIds = roleTerms.map((term) => term.id)
     const roleDefinitions = definitions.filter((definition) => termIds.includes(definition['term_id']))
-    qid = String(definitions.indexOf(roleDefinitions[parseInt(qid) - 1]))
+    qid = String(definitions.indexOf(roleDefinitions[parseInt(qid) - 1]) + 1)
     console.log(`original qid: ${qid}`)
   }
   // const qid = body.qid
@@ -70,11 +70,11 @@ export const GET = auth(async function GET(req, { params }) {
     // we need to find the original question id
     let roleTerms = terms.filter((term) => term.domain == role.split("user-")[1])
     if(roleTerms.length == 0) {
-      roleTerms = terms
+      roleTerms = terms.filter((term) => term.domain != "demo")
     }
     const termIds = roleTerms.map((term) => term.id)
     const roleDefinitions = definitions.filter((definition) => termIds.includes(definition['term_id']))
-    qid = String(definitions.indexOf(roleDefinitions[parseInt(qid) - 1]))
+    qid = String(definitions.indexOf(roleDefinitions[parseInt(qid) - 1]) + 1)
     console.log(`original qid: ${qid}`)
   }
   const now = new Date();

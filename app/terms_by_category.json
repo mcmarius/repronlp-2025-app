@@ -47,4 +47,9 @@
  {"id":147, "term_text":" slip-off slope", "category":"WIKI", "domain": "geology"},
  {"id":148, "term_text":" virology", "category":"WIKI", "domain": "medicine"},
  {"id":149, "term_text":" xenotime", "category":"WIKI", "domain": "geology"},
- {"id":150, "term_text":" electromagnetic radiation", "category":"WIKI", "domain": "physics"}]
+ {"id":150, "term_text":" electromagnetic radiation", "category":"WIKI", "domain": "physics"},
+ {"id":201, "term_text":" demo term 1", "category":"WIKI", "domain": "demo"},
+ {"id":202, "term_text":" demo term 2", "category":"WIKI", "domain": "demo"},
+ {"id":203, "term_text":" demo term 3", "category":"WIKI", "domain": "demo"},
+ {"id":204, "term_text":" demo term 4", "category":"WIKI", "domain": "demo"},
+ {"id":205, "term_text":" demo term 5", "category":"WIKI", "domain": "demo"}]
