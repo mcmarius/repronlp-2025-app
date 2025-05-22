@@ -28,17 +28,17 @@ export default function Instructions(props: InstructionProps) {
         <div className="grid gap-0">
           Examples of definitions with no factual inaccuracies:
           <div className="p-4"><strong>Term:</strong> Acanthoma <br/>
-            <strong>Definiton:</strong> Acanthoma is a skin lesion that develops from cells in the skin. <br/><br/>
+            <strong>Definition:</strong> Acanthoma is a skin lesion that develops from cells in the skin. <br/><br/>
             <strong>Term:</strong> Transformer <br/>
-            <strong>Definiton:</strong> The Transformer is a deep learning model architecture relying entirely on an attention mechanism to draw global dependencies between input and output.
+            <strong>Definition:</strong> The Transformer is a deep learning model architecture relying entirely on an attention mechanism to draw global dependencies between input and output.
           </div>
         </div>
         <div className="grid gap-0">
         Examples of factually inaccurate definitions:
           <div className="p-4"><strong>Term:</strong> Acanthoma <br/>
-            <strong>Definiton:</strong> Acanthoma is a type of <span className="text-danger"><strong><u>skin cancer</u></strong></span>. <br/>(inaccuracy marked in red; it is benign, not cancerous).<br/><br/>
+            <strong>Definition:</strong> Acanthoma is a type of <span className="text-danger"><strong><u>skin cancer</u></strong></span>. <br/>(inaccuracy marked in red; it is benign, not cancerous).<br/><br/>
             <strong>Term:</strong> Transformer <br/>
-            <strong>Definiton:</strong> The Transformer is a <span className="text-danger"><strong><u>type of cheese</u></strong></span>. <br/>(inaccuracy marked in red).<br/>
+            <strong>Definition:</strong> The Transformer is a <span className="text-danger"><strong><u>type of cheese</u></strong></span>. <br/>(inaccuracy marked in red).<br/>
           </div>
         </div>
         <strong>Please do not press the back button while taking this task.</strong>
