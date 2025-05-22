@@ -16,7 +16,7 @@ export default async function Home() {
   const role = session?.user.role || 'user'
   let roleTerms = terms.filter((term) => term.domain == role.split("user-")[1])
   if(roleTerms.length == 0) {
-    roleTerms = terms
+    roleTerms = terms.filter((term) => term.domain != "demo")
   }
   const termIds = roleTerms.map((term) => term.id)
   const roleDefinitions = definitions.filter((definition) => termIds.includes(definition['term_id']))
